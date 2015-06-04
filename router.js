@@ -13,6 +13,7 @@ module.exports = function (app) {
 
     // kissme
     app.get('/kissme', kissme.index);
+    app.get('/kissme/kiss', kissme.kisslocal);
     app.post('/kissme/kiss', kissme.kiss);
     app.get('/kissme/random', kissme.random);
 };

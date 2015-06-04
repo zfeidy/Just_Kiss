@@ -42,7 +42,7 @@ app.use(session({
         host: redisConfig.redis_host
     }),
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: true
 }));
 
 // 访问计数器
