@@ -131,7 +131,7 @@ Employee.random = function (sessionid, employees, callback) {
  * @returns {undefined}
  */
 Employee.randomAll = function (sessionid, employees, callback) {
-    var result = [];
+    
     // rediskey，以sessionid为唯一标示符
     var redis_key = "kissme_" + sessionid;
     // 一次从redis里面随机取出number个元素
@@ -141,26 +141,37 @@ Employee.randomAll = function (sessionid, employees, callback) {
         }
         // 如果结果集为空或者空数组
         if (!data || data.length === 0) {
-            // 复制数组
-            var _employees = employees.slice(0);
-            var size = _employees.length;
-            for (var i = 0; i < number; i++) {
-                var randomindex = randomIndex(size);
-                result.push(_employees[randomindex].id);
-                // 删除当前数据
-                _employees.splice(randomindex, 1);
-                size--;
-            }
-            redis.sadd(redis_key, getAllId(employees), function (err, data) {
-                if (err) {
-                    console.log(err);
+            var kissed_session = "kissed_" + sessionid;
+            redis.get(kissed_session, function (geterr, getdata) {
+                if (geterr) {
+                    console.log(geterr);
                 }
-                console.log(data);
+                if (getdata == 1) {
+                    callback(null);
+                } else {
+                    var result = [];
+                    // 复制数组
+                    var _employees = employees.slice(0);
+                    var size = _employees.length;
+                    for (var i = 0; i < number; i++) {
+                        var randomindex = randomIndex(size);
+                        result.push(_employees[randomindex].id);
+                        // 删除当前数据
+                        _employees.splice(randomindex, 1);
+                        size--;
+                    }
+                    redis.sadd(redis_key, getAllId(employees), function (err, data) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        console.log(data);
+                    });
+                    if (callback) {
+                        callback(result);
+                    }
+                    console.log("randomAll result = " + result);
+                }
             });
-            if (callback) {
-                callback(result);
-            }
-            console.log("randomAll result = " + result);
         } else {
             if (callback) {
                 callback(data);
