@@ -3,9 +3,6 @@ var globalemployee;
 var visits;
 
 exports.index = function (req, res) {
-    console.log(req.session.user);
-    console.log(req.sessionID);
-    var sessionid = req.sessionID;
 };
 
 /**
