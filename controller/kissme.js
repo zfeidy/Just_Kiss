@@ -5,6 +5,12 @@ var visits;
 exports.index = function (req, res) {
 };
 
+exports.kisslocal = function(req, res){
+    res.render("kissme/kiss",{
+        title:"静态随即"
+    });
+};
+
 /**
  * 执行kissme操作
  * @param {type} req
