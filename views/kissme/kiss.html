@@ -1,0 +1,86 @@
+<% include ../header.html %>
+<div class="container-fluid">
+    <div class="row center-block clearfix">
+        <div class="col-sm-6 col-md-6">
+            <div id="kissme_divlist" class="thumbnail">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var employees = [], unkiss = [], kissed = [], number = 4;
+    $(function () {
+        if (employees.length === 0) {
+            $.getJSON("/cache/kiss_jd_employee", function (data) {
+                employees = data;
+                render(random(employees));
+            });
+        } else {
+            render(random(employees));
+        }
+        // 随即生成指定【4】个图片
+        var random = function (employees) {
+            console.log(employees);
+            var tmp = [];
+            if (unkiss.length === 0 && kissed.length === 0)
+                unkiss = employees.slice(0);
+            var unkiss_length = unkiss.length;
+            var kiss_length = unkiss_length < number ? number - unkiss_length : 0;
+            console.log("unkiss_length = " + unkiss_length);
+            console.log("kiss_length = " + kiss_length);
+            unkiss_length = unkiss_length < number ? unkiss_length : number;
+            for (var i = 0; i < kiss_length; i++) {
+                var employee = kissed[randomIndex(kissed.length)];
+                while (tmp[employee]) {
+                    employee = kissed[randomIndex(kissed.length)];
+                }
+                employee.kissed = true;
+                tmp.push(employee);
+            }
+            for (var i = 0; i < unkiss_length; i++) {
+                var employee = unkiss.splice(randomIndex(unkiss.length), 1)[0];
+                employee.kissed = false;
+                kissed.push(employee);
+                tmp.push(employee);
+            }
+            console.log(tmp);
+            return tmp;
+        };
+
+        // 渲染图片
+        var render = function (checked) {
+            var html = "";
+            $.each(checked, function (i) {
+                var row = checked[i];
+                html += "<img src='/" + row.images + "'";
+                html += " employeeid='" + row.id + "'";
+                html += " name='" + row.name + "'";
+                html += " kissed='" + row.kissed + "'";
+                html += " onclick='imgClick(this)'";
+                html += " class='img-thumbnail kissme_img' data-holder-rendered='true'/>";
+            });
+            $("#kissme_divlist").html(html);
+        };
+
+        // 获取一个小于size的随机整数
+        var randomIndex = function (size) {
+            return Math.floor(Math.random() * size);
+        };
+        
+        $("#kissme_divlist").click(function(){
+            render(random(employees));
+        });
+    });
+
+    var imgClick = function (data) {
+        var thisImg = $(data);
+        var kissed = thisImg.attr("kissed");
+        if (kissed == "true") {
+            alert("我脸都红了，不要再亲啦！");
+        } else {
+            alert("谢谢您的香吻，我们京东一定不会辜负您的期望！");
+            thisImg.attr("kissed", true);
+        }
+    };
+</script>
+<% include ../footer.html %>
