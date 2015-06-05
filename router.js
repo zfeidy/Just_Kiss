@@ -1,6 +1,7 @@
 var config = require('./config/setting');
 var index = require('./controller/index');
 var kissme = require('./controller/kissme');
+var employee = require('./controller/employee');
 
 module.exports = function (app) {
     // 基本操作
@@ -16,4 +17,7 @@ module.exports = function (app) {
     app.get('/kissme/kiss', kissme.kisslocal);
     app.post('/kissme/kiss', kissme.kiss);
     app.get('/kissme/random', kissme.random);
+    
+    // employee
+    app.get('/employee/add', employee.add);
 };
