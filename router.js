@@ -1,16 +1,16 @@
 var config = require('./config/setting');
-var index = require('./controller/index');
+var user = require('./controller/user');
 var kissme = require('./controller/kissme');
 var employee = require('./controller/employee');
 
 module.exports = function (app) {
     // 基本操作
-    app.get('/', index.index);
-    app.get('/login', index.login);
-    app.post('/login', index.doLogin);
-    app.get('/logout', index.logout);
-    app.get('/home', index.home);
-    app.get('/chat', index.chat);
+    app.get('/', user.index);
+    app.get('/login', user.login);
+    app.post('/login', user.doLogin);
+    app.get('/logout', user.logout);
+    app.get('/home', user.home);
+    app.get('/chat', user.chat);
 
     // kissme
     app.get('/kissme', kissme.index);
@@ -20,4 +20,6 @@ module.exports = function (app) {
     
     // employee
     app.get('/employee/add', employee.add);
+    app.post('/employee/add', employee.doAdd);
+    app.get('/employee/list', employee.list);
 };
