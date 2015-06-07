@@ -1,16 +1,32 @@
 <% include header.html %>
-<div data-role="page">
-    <div data-role="header">
-        <h1><%= title %></h1>
+<body style="background-image: url(/images/bg.jpg)">
+    <div class="container-fluid">
+        <div class="panel panel-default well" style="width: 400px;height: 300px;margin: 150px auto">
+            <div class="panel-heading" style="height: 50px;">
+                <div class="panel-title" style="text-align: left">用户登录</div>
+            </div>
+            <div style="padding-top:30px" class="panel-body">
+                <form method="post" action="/login">
+                    <div class="input-group">
+                        <label class="input-group-addon">帐号</label>
+                        <input type="text" name="username" class="form-control" placeholder="帐号">
+                    </div>
+                    <p/>
+                    <div class="input-group">
+                        <label class="input-group-addon">密码</label>
+                        <input type="password" name="password" class="form-control" placeholder="密码">
+                    </div>
+                    <p/>
+                    <div class="btn-group btn-group-justified" role="group">
+                        <div class="btn-group" role="group">
+                            <button type="submit" class="btn btn-default">登录</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="reset" class="btn btn-default">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div data-role="content">
-        <form method="post" action="/login">
-            <label for="username" class="ui-hidden-accessible">账号</label>
-            <input type="text" name="username" id="username" placeholder="账号...">
-            <label for="password" class="ui-hidden-accessible">密码</label>
-            <input type="password" name="password" id="password" placeholder="密码...">
-            <input type="submit" data-inline="true" value="提交">
-        </form>
-    </div>
-</div>
-<% include footer.html %>
+    <% include footer.html %>
