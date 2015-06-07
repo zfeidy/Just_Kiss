@@ -20,6 +20,7 @@ exports.doLogin = function (req, res) {
         username: 'admin',
         password: 'admin'
     };
+    console.log(11);
     if (req.body.username === user.username && req.body.password === user.password) {
         req.session.user = user;
         return res.redirect('/home');
