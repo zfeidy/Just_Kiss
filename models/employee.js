@@ -57,14 +57,74 @@ Employee.prototype.kiss = function (sessionid, callback) {
 };
 
 /**
+ * 根据员工ID查询员工是否存在
+ * @param {type} id
+ * @param {type} employees
+ * @param {type} callback
+ * @returns {unresolved}
+ */
+Employee.getEmployeeById = function (id, employees, callback) {
+    for (var i = 0; i < employees.length; i++) {
+        if (id == employees[i].id) {
+            return callback(employees[i]);
+        }
+    }
+    return callback(null);
+};
+
+/**
+ * 增加一个员工信息
+ * @param {type} employee
+ * @param {type} employees
+ * @param {type} callback
+ * @returns {undefined}
+ */
+Employee.add = function (employee, employees, callback) {
+    employees.push(employee);
+    cache.setToLocal(kissme_employee, JSON.stringify(employees), function (err) {
+        if (err) {
+            callback(err);
+        }
+        callback(null);
+    });
+};
+
+/**
+ * 更新一个员工信息
+ * @param {type} employee
+ * @param {type} employees
+ * @param {type} callback
+ * @returns {unresolved}
+ */
+Employee.update = function (employee, employees, callback) {
+    for (var i = 0; i < employees.length; i++) {
+        if (employee.id == employees[i].id) {
+            employees[i].name = employee.name;
+            employees[i].line = employee.line;
+            employees[i].images = employee.images;
+            employees[i].slogan = employee.slogan;
+        }
+    }
+    cache.setToLocal(kissme_employee, JSON.stringify(employees), function (err, data) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, data);
+    });
+};
+
+/**
  * 初始化数据，先从本地拿，本地没有就从redis里面拿
  * @param {function} callback
  * @returns {undefined}
  */
 Employee.init = function (callback) {
     cache.getFromLocal(kissme_employee, function (data) {
-        var datajson = JSON.parse(data);
         var employee = [];
+        if (!data) {
+            return callback(employee);
+        }
+        var datajson = JSON.parse(data);
         for (var i in datajson) {
             employee.push(new Employee(datajson[i]));
         }
@@ -98,6 +158,7 @@ Employee.random = function (sessionid, employees, callback) {
                 _employees.splice(randomindex, 1);
                 size--;
             }
+
             redis.sadd(redis_key, getUncheckId(_employees), function (err, data) {
                 if (err) {
                     console.log(err);
@@ -111,9 +172,6 @@ Employee.random = function (sessionid, employees, callback) {
             redis.srem(redis_key, data, function (err, delnum) {
                 if (err) {
                     console.log(err);
-                }
-                if (delnum < number) {
-
                 }
             });
             if (callback) {
@@ -131,7 +189,7 @@ Employee.random = function (sessionid, employees, callback) {
  * @returns {undefined}
  */
 Employee.randomAll = function (sessionid, employees, callback) {
-    
+
     // rediskey，以sessionid为唯一标示符
     var redis_key = "kissme_" + sessionid;
     // 一次从redis里面随机取出number个元素
