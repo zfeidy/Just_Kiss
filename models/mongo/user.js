@@ -1,32 +1,35 @@
 var mongoose = require('mongoose');
-var dburl = require("../config/mongo").db;
-// 连接数据库
-exports.connect = function (callback) {
-    mongoose.connect(dburl);
-};
-// 断开数据库
-exports.disconnect = function (callback) {
-    mongoose.disconnect(callback);
-};
-
-exports.setup = function (callback) {
-    callback(null);
-};
+var Schema = mongoose.Schema;
+var ObjectId = Schema.Types.ObjectId;
+var Mixed = Schema.Types.Mixed;
 
 var UserSchema = new mongoose.Schema({
-    id: {type: Number}, // 编号
+    id: {type: ObjectId}, // 编号
     name: {type: String}, // 姓名
     password: {type: String} // 密码
 });
-
+UserSchema.index({name: 1}, {unique: true});
 var User = mongoose.model('user', UserSchema);
 exports.User = User;
 
-exports.getRandomUser = function (username, callback) {
-    User.findOne({name: username}, function (err, doc) {
-        if (err) {
-            return callback(err, null);
-        }
-        return callback(err, doc);
-    });
+// 根据name查询
+User.getUserByName = function (name, callback) {
+    User.findOne({name: name}, callback);
+};
+
+// 根据ID查询
+User.getUserById = function (id, callback) {
+    User.findOne({emid: id}, callback);
+};
+// 增加
+User.prototype.addUser = function (callback) {
+    this.save(callback);
+};
+// 更新
+User.prototype.updateUser = function (callback) {
+    this.update(callback);
+};
+// 删除
+User.deleteUser = function (id, callback) {
+    User.delete(id, callback);
 };

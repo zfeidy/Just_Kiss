@@ -1,0 +1,63 @@
+<% include ../header.html %>
+<body>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>员工</h1>
+        </div>
+        <div class=".able-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>工号</th>
+                        <th>姓名</th>
+                        <th>战线</th>
+                        <th>口号</th>
+                        <th>表情</th>
+                    </tr>
+                </thead>
+                <tbody id="employee_table_body"></tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var employees = []; // 员工缓存数组
+        $(function () {
+
+            /**
+             * 初始化操作，如果当前没有缓存，就使用ajax拉取数据
+             * @returns {undefined}
+             */
+            var init = function () {
+                // 当前没缓存，直接使用ajax加载
+                if (employees.length === 0) {
+                    $.getJSON("/cache/kiss_jd_employee", function (data) {
+                        employees = data;
+                        render(employees);
+                    });
+                } else {
+                    render(employees);
+                }
+            };
+
+
+            var render = function (employees) {
+                var html = "";
+                $.each(employees, function (i) {
+                    var row = employees[i];
+                    html += "<tr>";
+                    html += "<td>" + row.id + "</td>";
+                    html += "<td>" + row.name + "</td>";
+                    html += "<td>" + row.line + "</td>";
+                    html += "<td>" + row.slogan + "</td>";
+                    html += "<td><img src='/" + row.images + "' class='img-circle thumbnail_img'/>";
+                    html += "<img src='/" + row.images + "' class='img-circle thumbnail_img'/></a>";
+                    html += "</tr>";
+                });
+                $("#employee_table_body").html(html);
+            };
+
+            init();
+        });
+    </script>
+    <% include ../footer.html %>
