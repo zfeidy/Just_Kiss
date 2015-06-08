@@ -5,7 +5,7 @@
             <h1>员工</h1>
         </div>
         <div class=".able-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>工号</th>
@@ -16,7 +16,9 @@
                     </tr>
                 </thead>
                 <tbody id="employee_table_body"></tbody>
-                <tfoot></tfoot>
+                <tfoot>
+                    
+                </tfoot>
             </table>
         </div>
     </div>
@@ -50,8 +52,8 @@
                     html += "<td>" + row.name + "</td>";
                     html += "<td>" + row.line + "</td>";
                     html += "<td>" + row.slogan + "</td>";
-                    html += "<td><img src='/" + row.images + "' class='img-circle thumbnail_img'/>";
-                    html += "<img src='/" + row.images + "' class='img-circle thumbnail_img'/></a>";
+                    html += "<td><img src='/" + row.images.happy + "' class='img-circle thumbnail_img'/>";
+                    html += "<img src='/" + row.images.sad + "' class='img-circle thumbnail_img'/></a>";
                     html += "</tr>";
                 });
                 $("#employee_table_body").html(html);

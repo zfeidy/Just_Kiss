@@ -25,5 +25,11 @@ module.exports = Employee;
 
 // 根据ID查询
 Employee.getEmployeeById = function (id, callback) {
-    Employee.findOne({emid: id}, callback);
+    Employee.findOne({emid: id}, function (err, message) {
+        if (err) {
+            callback(err);
+            console.log(err);
+        }
+        return callback(null, message);
+    });
 };

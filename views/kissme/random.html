@@ -8,6 +8,8 @@
         var id = em.id;     // 编号
         var name = em.name;  // 姓名
         var images = em.images;
+        var happy = images.happy;
+        var sad = images.sad;
         var line = em.line;  // 战线
         var slogan = em.slogan; // 口号
         var times = em.times;  // 被赞次数
@@ -15,7 +17,7 @@
         %>
         <div class="col-sm-6 col-md-6">
             <div class="thumbnail">
-                <img src="/<%- images %>" alt="<%- slogan %>" employeeid="<%- id %>" name="<%- name %>" kissed="<%- kissed %>" class="img-thumbnail" data-holder-rendered="true" style="height: 400px; width: 100%; display: block;">
+                <img src="/<%- happy %>" alt="<%- slogan %>" employeeid="<%- id %>" name="<%- name %>" kissed="<%- kissed %>" class="img-thumbnail" data-holder-rendered="true" style="height: 400px; width: 100%; display: block;">
                 <div class="caption">
                     <h6 id="thumbnail-label"><%- name %></h6>
                     <p><%- slogan %></p>

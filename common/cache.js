@@ -28,14 +28,30 @@ var getFromRedis = function (key, callback) {
         });
     });
 };
-
 exports.getFromRedis = getFromRedis;
+
+// 存储到redis
+var setToRedis = function (key, data, callback) {
+    redis.set(key, data, callback);
+};
+exports.setToRedis = setToRedis;
 
 // key为本地文件名，data为数据
 var setToLocal = function (key, data, callback) {
-    fs.writeFile(path.join(cachepath + '/' + key), data, callback);
-};
+    fs.writeFile(path.join(cachepath + '/' + key), data, function (err) {
+        if (err) {
+            return callback(err);
+        }
+        // 存储到本地的同时存储到redis
+        setToRedis(key, data, function (err, data) {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, data);
+        });
+    });
 
+};
 exports.setToLocal = setToLocal;
 
 // 初始化数据
@@ -46,8 +62,8 @@ var getFromLocal = function (key, callback) {
             getFromRedis(key, function (redisdata) {
                 callback(redisdata);
             });
+        console.log(filedata);
         callback(filedata);
     });
 };
-
 exports.getFromLocal = getFromLocal;

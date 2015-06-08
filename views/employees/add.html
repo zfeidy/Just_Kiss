@@ -1,50 +1,86 @@
 <% include ../header.html %>
-<div class="container">
-    <div class="panel panel-default" style="margin: 150px auto;width: 500px;height: 380px">
-        <div class="panel-heading">添加员工信息</div>
-        <div class="panel-body">
-            <form action="add" method="post">
-                <div class="input-group">
-                    <label class="input-group-addon">工号</label>
-                    <input type="text" class="form-control" name="id" placeholder="工号">
-                </div>
-                <p/>
-                <div class="input-group">
-                    <label class="input-group-addon">姓名</label>
-                    <input type="text" class="form-control" name="name" placeholder="姓名">
-                </div>
-                <p/>
-                <div class="input-group">
-                    <label class="input-group-addon">口号</label>
-                    <input type="text" class="form-control" name="slogan" placeholder="口号">
-                </div>
-                <p/>
-                <div class="input-group">
-                    <label class="input-group-addon">图片</label>
-                    <input type="text" class="form-control" name="happyimg" placeholder="开心图片">
-                    <input type="text" class="form-control" name="sadimg" placeholder="沮丧图片">
-                </div>
-                <p/>
-                <div class="input-group">
-                    <label class="input-group-addon">战线</label>
-                    <select class="form-control" name="line">
-                        <option>战线一</option>
-                        <option>战线二</option>
-                        <option>战线三</option>
-                        <option>战线四</option>
-                    </select>
-                </div>
-                <p/>
-                <div class="btn-group btn-group-justified" role="group">
-                    <div class="btn-group" role="group">
-                        <button type="submit" class="btn btn-default">上传</button>
+<body>
+    <div class="container">
+        <div class="panel panel-default" style="margin: 150px auto;width: 500px;height: 380px">
+            <div class="panel-heading">添加员工信息</div>
+            <div class="panel-body">
+                <form id="employeeAddForm" action="add" method="post">
+                    <div class="input-group">
+                        <label class="input-group-addon">工号</label>
+                        <input type="text" class="form-control" name="id" placeholder="工号">
                     </div>
-                    <div class="btn-group" role="group">
-                        <button type="reset" class="btn btn-default">取消</button>
+                    <p/>
+                    <div class="input-group">
+                        <label class="input-group-addon">姓名</label>
+                        <input type="text" class="form-control" name="name" placeholder="姓名">
                     </div>
-                </div>
-            </form>
+                    <p/>
+                    <div class="input-group">
+                        <label class="input-group-addon">口号</label>
+                        <input type="text" class="form-control" name="slogan" placeholder="口号">
+                    </div>
+                    <p/>
+                    <div class="input-group">
+                        <label class="input-group-addon">图片</label>
+                        <input type="file" class="form-control" name="happyimg" placeholder="开心图片">
+                        <input type="file" class="form-control" name="sadimg" placeholder="沮丧图片">
+                    </div>
+                    <p/>
+                    <div class="input-group">
+                        <label class="input-group-addon">战线</label>
+                        <select class="form-control" name="line">
+                            <option>战线一</option>
+                            <option>战线二</option>
+                            <option>战线三</option>
+                            <option>战线四</option>
+                        </select>
+                    </div>
+                    <p/>
+                    <div class="btn-group btn-group-justified" role="group">
+                        <div class="btn-group" role="group">
+                            <button type="submit" class="btn btn-default">上传</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="reset" class="btn btn-default">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<% include ../footer.html %>
+    <div id="employeeMsgModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="addEmployeeMsg" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="addEmployeeMsg">提示<a class="anchorjs-link" href="#addEmployeeMsg"><span class="anchorjs-icon"></span></a></h4>
+                </div>
+                <div class="modal-body" id="employeeMsg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#employeeAddForm").submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: 'add',
+                    type: 'post',
+                    data: $("#employeeAddForm").serialize(),
+                    success: function (data) {
+                        var msg = "";
+                        console.log(data);
+                        if (data.success) {
+                            msg += "成功！" + data.msg;
+                        } else {
+                            msg += "失败！" + data.msg;
+                        }
+                        $("#employeeMsg").html(msg);
+                        $("#employeeMsgModal").modal('show');
+                    }
+                });
+            });
+        });
+    </script>
+    <% include ../footer.html %>
