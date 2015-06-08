@@ -4,6 +4,7 @@ var kissme = require('./controller/kissme');
 var employee = require('./controller/employee');
 
 module.exports = function (app) {
+    
     // 基本操作
     app.get('/', user.index);
     app.get('/login', user.login);
