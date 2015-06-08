@@ -14,5 +14,7 @@ exports.count = function (req, res, next) {
             });
         }
     });
+    console.log("--------------------------");
+    console.log(counter);
     next(counter);
 };
