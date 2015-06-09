@@ -1,6 +1,4 @@
 var redis = require('../common/redis');
-var eventproxy = require('eventproxy');
-var counter = 0;
 
 exports.count = function (req, res, next) {
     var sessionid = req.sessionID;
@@ -8,13 +6,15 @@ exports.count = function (req, res, next) {
     redis.get(kissed_session, function (err, data) {
         if (!data) {
             redis.set(kissed_session, 0, function (err, data) {
-                if (data) {
-                    counter++;
-                }
+                if (err)
+                    return next(err);
+            });
+
+            redis.incrby("kissed_counter", 1, function (err, data) {
+                if (err)
+                    return next(err);
             });
         }
+        next();
     });
-    console.log("--------------------------");
-    console.log(counter);
-    next(counter);
 };
