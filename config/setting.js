@@ -11,11 +11,13 @@ var config = {
     use_mongo: false, // 是否使用mongodb做存储
     // 程序运行的端口
     port: 3000,
+    admin: "21232f297a57a5a743894a0e4a801fc3",
+    password: "21232f297a57a5a743894a0e4a801fc3",
     upload: {
         path: path.join(__dirname, '../public/upload/'),
         url: 'public/upload/'
     },
-    cache:{
+    cache: {
         path: path.join(__dirname, '../public/cache/'),
         url: 'public/cache/'
     }
