@@ -1,4 +1,5 @@
 // 加载redis的配置
+var setting = require('./config/setting');
 var redisConfig = require('./config/redis');
 // 加载express
 var express = require('express');
@@ -13,6 +14,7 @@ var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var router = require('./router');
 var visits = require('./middleware/visits');
+var render = require('./middleware/render');
 var app = express();
 
 // 设置模板
@@ -24,6 +26,11 @@ app.set('view engine', 'html');
 // 定义icon图标
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 //app.use(favicon());
+
+if (setting.debug) {
+    // 渲染时间
+    app.use(render.render);
+}
 
 // 定义日志和输出级别
 app.use(logger('dev'));
@@ -50,17 +57,6 @@ app.use(visits.count);
 
 // 使用路由
 router(app);
-
-// error handlers
-app.use(function (req, res, next) {
-    res.locals.user = req.session.user;
-    var err = req.session.error;
-    delete req.session.error;
-    res.locals.message = '';
-    if (err)
-        res.locals.message = '<div class="alert alert-error">' + err + '</div>';
-    next();
-});
 
 // development error handler
 // will print stacktrace
