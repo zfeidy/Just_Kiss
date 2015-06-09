@@ -17,7 +17,7 @@
                 </thead>
                 <tbody id="employee_table_body"></tbody>
                 <tfoot>
-                    
+
                 </tfoot>
             </table>
         </div>
@@ -52,8 +52,10 @@
                     html += "<td>" + row.name + "</td>";
                     html += "<td>" + row.line + "</td>";
                     html += "<td>" + row.slogan + "</td>";
-                    html += "<td><img src='/" + row.images.happy + "' class='img-circle thumbnail_img'/>";
-                    html += "<img src='/" + row.images.sad + "' class='img-circle thumbnail_img'/></a>";
+                    var happy = row.images.happy;
+                    var sad = row.images.sad;
+                    html += "<td><img src='" + (happy.indexOf("http://") === 0 ? happy : ("/" + happy)) + "' class='img-circle thumbnail_img'/>";
+                    html += "<img src='" + (sad.indexOf("http://") === 0 ? sad : ("/" + sad)) + "' class='img-circle thumbnail_img'/></a>";
                     html += "</tr>";
                 });
                 $("#employee_table_body").html(html);
