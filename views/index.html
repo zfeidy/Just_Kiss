@@ -361,9 +361,9 @@
                 var render = function (checked) {
                     $.each(checked, function (i) {
                         var em = checked[i];
-                        $("p#kiss_employee_" + (i + 1) + " > img").attr("src", em.images.sad);
-                        $("p#kiss_employee_" + (i + 1) + " > img").attr("employeeid", em.id);
-                        $("i#kiss-num0" + (i + 1)).html(em.times);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("src", em.images.sad);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("employeeid", em.id);
+                        $("i.kiss-num0" + (i + 1)).html(em.times);
                     });
                 };
 
@@ -385,6 +385,7 @@
                  * @returns {undefined}
                  */
                 $(".change").click(function () {
+                    console.log(random(employees));
                     render(random(employees));
                 });
             })(jQuery);
