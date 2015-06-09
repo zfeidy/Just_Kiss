@@ -31,7 +31,6 @@ module.exports = Employee;
  */
 Employee.prototype.kiss = function (sessionid, callback) {
     var employeeid = this.id;
-    console.log("employeeid = " + employeeid);
     // 用sortedset存储员工被kiss的数目，每kiss一次权值加1
     redis.zincrby(kissme_rank, 1, employeeid, function (err, data) {
         if (err) {
@@ -222,7 +221,6 @@ Employee.randomAll = function (sessionid, employees, callback) {
                         if (err) {
                             console.log(err);
                         }
-                        console.log(data);
                     });
                     if (callback) {
                         callback(result);
@@ -281,6 +279,20 @@ Employee.fill = function (employees, employeeIds) {
         }
         return employee;
     }
+};
+
+/**
+ * 员工被kiss数目统计
+ * @param {type} callback
+ * @returns {undefined}
+ */
+Employee.count = function (callback) {
+    redis.zrevrange(kissme_rank, 0, -1,'withscores', function (err, data) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, data);
+    });
 };
 
 // 获取一个小于size的随机整数

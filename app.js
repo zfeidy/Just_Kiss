@@ -1,5 +1,6 @@
-// 加载redis的配置
+// 记载配置项
 var setting = require('./config/setting');
+// 加载redis的配置
 var redisConfig = require('./config/redis');
 // 加载express
 var express = require('express');
@@ -15,6 +16,9 @@ var RedisStore = require('connect-redis')(session);
 var router = require('./router');
 var visits = require('./middleware/visits');
 var render = require('./middleware/render');
+var error = require('./middleware/error');
+
+// 生成app对象
 var app = express();
 
 // 设置模板
@@ -32,15 +36,15 @@ if (setting.debug) {
     app.use(render.render);
 }
 
-// 定义日志和输出级别
-app.use(logger('dev'));
-// 定义数据解析器
+// 定义数据解析器，将client提交过来的post请求放入request.body中
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 // 设置 cookie
-app.use(cookieParser());
+app.use(cookieParser("kiss618"));
 // 定义静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
+// 定义日志和输出级别
+app.use(logger('dev'));
 // 设置 Session
 app.use(session({
     secret: redisConfig.session_secret,
@@ -52,14 +56,12 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// 访问计数器
-app.use(visits.count);
-
 // 使用路由
 router(app);
+// 404错误处理
+app.use(error.errorPage);
 
-// development error handler
-// will print stacktrace
+// 开发环境，500错误处理和错误堆栈跟踪
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
@@ -70,8 +72,7 @@ if (app.get('env') === 'development') {
     });
 }
 
-// production error handler
-// no stacktraces leaked to user
+// 生产环境，500错误处理
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -80,4 +81,5 @@ app.use(function (err, req, res, next) {
     });
 });
 
+// 输出模型app
 module.exports = app;
