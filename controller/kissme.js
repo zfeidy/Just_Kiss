@@ -18,8 +18,6 @@ exports.kisslocal = function(req, res){
  * @returns {undefined}
  */
 exports.kiss = function (req, res) {
-    console.log(req);
-    console.log(req.sessionID);
     var sessionid = req.sessionID;
     var em = new employee({
         id: req.body.id,
@@ -30,7 +28,6 @@ exports.kiss = function (req, res) {
         times: req.body.times,
         kissed: req.body.kissed
     });
-    console.log(em);
     em.kiss(sessionid, function (data) {
         console.log("kiss    =    " + data);
         if (data) {

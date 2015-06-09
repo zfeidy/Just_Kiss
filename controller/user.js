@@ -1,10 +1,9 @@
+var utility = require('utility');
+var config = require('../config/setting');
+var User = require('../models/user');
+
 exports.index = function (req, res) {
-    console.log(req.session.user);
-    console.log(req);
-    if (req.session.user)
-        res.render('index', {title: 'Index'});
-    else
-        return res.redirect('/login');
+    res.render('index', {title: '亲吻我吧'});
 };
 
 exports.login = function (req, res) {
@@ -12,18 +11,18 @@ exports.login = function (req, res) {
 };
 
 exports.chat = function (req, res) {
-    res.renderfile('views/chat/chat.html');
+
 };
 
 exports.doLogin = function (req, res) {
-    var user = {
-        username: 'admin',
-        password: 'admin'
-    };
-    console.log(11);
-    if (req.body.username === user.username && req.body.password === user.password) {
+    var user = new User({
+        name: config.admin,
+        password: config.password
+    });
+    if (utility.md5(req.body.username) === user.name &&
+            utility.md5(req.body.password) === user.password) {
         req.session.user = user;
-        return res.redirect('/home');
+        return res.redirect('/employee/list');
     } else {
         req.session.error = '用户名或密码不正确';
         return res.redirect('/login');
