@@ -72,7 +72,7 @@
             if (isclicked == true) {
                 return;
             }
-            $("audio").attr("src", "kiss.wav")
+            $("audio").attr("src", "audio/kiss.wav")
             isclicked = true;
             var kissNum = 0;
             var t1 = 50;
@@ -235,41 +235,43 @@
         }, 1000);
 
         /*点击人物*/
-        $('.sad ul li p').bind('click', function (event) {
-            if ($(this).hasClass('hadClick')) {
-                return;
-            }
-            $(this).addClass('hadClick');
-            $(this).children('.sad-kiss').show();
-            /*$('.sad-swing-hide').removeClass();*/
-            $(this).find('.sad-swing-hide').removeClass();
-            setTimeout(function () {
-                $('.sad-popup').show();
-                /*弹窗动画*/
-                setTimeout(function () {
-                    $('.sp-people').show();
-                    $('.sp-people').addClass('happy-tada');
-                    setTimeout(function () {
-                        $('.sp-skin01,.sp-del,.sp-txt').show();
-                        $('.sp-skin01,.sp-del,.sp-txt').addClass('happy-fadeIn');
-                        setTimeout(function () {
-                            $('.happy-point').show();
-                            $('.happy-point').addClass('happy-bounceInLeft');
-                            setTimeout(function () {
-                                $('.happy-point').addClass('happy-pointgo');
-
-                            }, 2000);
-                        }, 500);
-                    }, 1000);
-                }, 1000);
-            }, 800);
-
-        });
+//        $('.sad ul li p').bind('click', function (event) {
+//            if ($(this).hasClass('hadClick')) {
+//                return;
+//            }
+//            var happyurl = $(this).children('img').attr("data");
+//            $('.sad-popup .sp-people img').attr("src", happyurl);
+//            $(this).addClass('hadClick');
+//            $(this).children('.sad-kiss').show();
+//            /*$('.sad-swing-hide').removeClass();*/
+//            $(this).find('.sad-swing-hide').removeClass();
+//            setTimeout(function () {
+//                $('.sad-popup').show();
+//                /*弹窗动画*/
+//                setTimeout(function () {
+//                    $('.sp-people').show();
+//                    $('.sp-people').addClass('happy-tada');
+//                    setTimeout(function () {
+//                        $('.sp-skin01,.sp-del,.sp-txt').show();
+//                        $('.sp-skin01,.sp-del,.sp-txt').addClass('happy-fadeIn');
+//                        setTimeout(function () {
+//                            $('.happy-point').show();
+//                            $('.happy-point').addClass('happy-bounceInLeft');
+//                            setTimeout(function () {
+//                                $('.happy-point').addClass('happy-pointgo');
+//
+//                            }, 2000);
+//                        }, 500);
+//                    }, 1000);
+//                }, 1000);
+//            }, 800);
+//
+//        });
         /*弹层关闭按钮*/
         $('.sp-del').bind('click', function (event) {
             $('.sad-popup').hide();
         });
-        /*换一批吻*/
+//        /*换一批吻*/
 //        var changeAttr = [];
 //        $('.change').bind('click', function (event) {
 //            changeAttr = [];
@@ -353,7 +355,6 @@
                     swiper.lockSwipeToNext();
                     break;
             }
-
         }
     });
 })(Zepto);
