@@ -53,7 +53,11 @@ app.use(session({
         host: redisConfig.redis_host
     }),
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * setting.expires,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * setting.expires)
+    }
 }));
 
 // 使用路由
