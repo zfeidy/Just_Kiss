@@ -26,7 +26,6 @@
                 <div class="swiper-slide">
                     <div class="section fore1">
                         <div class="login">
-                            <div class="count">75%</div>
                             <div class="loading-box">
                                 <div class="loading"></div>
                                 <div class="loading"></div>
@@ -298,11 +297,26 @@
         <script type="text/javascript" src="/javascripts/swiper.min.js"></script>
         <script type="text/javascript" src="/javascripts/slide.js"></script>
         <script type="text/javascript" src="/javascripts/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="/javascripts/jquery-1.11.3.min.js"></script>
         <script type="text/javascript">
             var employees = [], // 员工缓存数组
                     unkiss = [], // 未被kiss的数组
                     kissed = [], // 已被kiss的数组
                     number = 4;  // 一次显示的数组长度
+            changeAttr = []; // 皮肤数组
+
+            (function () {
+                var local = window.location.pathname;
+                $.ajax({
+                    url:"http://wq.jd.com/mlogin/wxv3/LoginCheckJsonp?callback=validateLoginCallback",
+                    type:"post",
+                    dataType:"jsonp",
+                    success:function(data){
+                        
+                    }
+                });
+            })();
+
             (function ($) {
                 /**
                  * 初始化操作，如果当前没有缓存，就使用ajax拉取数据
@@ -334,8 +348,8 @@
                     var unkiss_length = unkiss.length;
                     // 如果unkiss的数组长度足设定值，就先从kissed数组中补充
                     var kiss_length = unkiss_length < number ? number - unkiss_length : 0;
+                    var _kissed = kissed.slice(0);
                     for (var i = 0; i < kiss_length; i++) {
-                        var _kissed = kissed.slice(0);
                         // 随机一个数据出来
                         var employee = _kissed.splice(randomIndex(_kissed.length), 1)[0];
                         // 设置kissed状态
@@ -344,8 +358,8 @@
                     }
                     // 从unkiss中填充数据到tmp
                     unkiss_length = unkiss_length < number ? unkiss_length : number;
+                    var _unkiss = unkiss.slice(0);
                     for (var i = 0; i < unkiss_length; i++) {
-                        var _unkiss = unkiss.slice(0);
                         // 随机一个数据出来
                         var employee = _unkiss.splice(randomIndex(_unkiss.length), 1)[0];
                         tmp.push(employee);
@@ -363,7 +377,16 @@
                         var em = checked[i];
                         $("p#kiss_employee_0" + (i + 1) + " > img").attr("src", em.images.sad);
                         $("p#kiss_employee_0" + (i + 1) + " > img").attr("employeeid", em.id);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("happyurl", em.images.happy);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("kissed", em.kissed);
                         $("i.kiss-num0" + (i + 1)).html(em.times);
+                        if (em.kissed == true) {
+                            $('.sad ul li p').eq(i).addClass("hadClick");
+                            $('.sad ul li p').eq(i).children('.sad-kiss').show();
+                        } else {
+                            $('.sad ul li p').eq(i).removeClass("hadClick");
+                            $('.sad ul li p').eq(i).children('.sad-kiss').hide();
+                        }
                     });
                 };
 
@@ -376,6 +399,36 @@
                     return Math.floor(Math.random() * size);
                 };
 
+                /**
+                 * 切换皮肤功能
+                 * @param {type} event
+                 * @returns {undefined}
+                 */
+                var changeSkin = function () {
+                    changeAttr = [];
+                    for (var i = 0; i < 4; i++) {
+                        var changeNum = parseInt(Math.random() * 10);
+                        if (!findNum(changeNum, changeAttr)) {
+                            changeAttr.push(changeNum);
+                        } else {
+                            i--;
+                        }
+                    }
+                    $('.sad-cover img').each(function (index) {
+                        $('.sad-cover img').eq(index).attr("src", "skin/i/sad0" + changeAttr[index] + "-cover.png");
+                    });
+
+                };
+
+                var findNum = function (num, arr) {
+                    for (var i = 0; i < arr.length; i++) {
+                        if (num == arr[i]) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+
                 // 初始化
                 init();
 
@@ -385,36 +438,102 @@
                  * @returns {undefined}
                  */
                 $(".change").click(function () {
-                    console.log(random(employees));
                     render(random(employees));
+                    changeSkin();
                 });
+
+
+                /**
+                 * 点击人物切换动画的操作
+                 * @param {type} target 点击人物所对应的P节点
+                 * @returns {undefined}
+                 */
+                var clickOne = function (target) {
+                    if (target.hasClass('hadClick')) {
+                        return;
+                    }
+                    var happyurl = target.children('img').attr("happyurl");
+                    $('.sad-popup .sp-people img').attr("src", happyurl);
+                    target.addClass('hadClick');
+                    target.children('.sad-kiss').show();
+                    /*$('.sad-swing-hide').removeClass();*/
+                    target.find('.sad-swing-hide').removeClass();
+                    setTimeout(function () {
+                        $('.sad-popup').show();
+                        /*弹窗动画*/
+                        setTimeout(function () {
+                            $('.sp-people').show();
+                            $('.sp-people').addClass('happy-tada');
+                            setTimeout(function () {
+                                $('.sp-skin01,.sp-del,.sp-txt').show();
+                                $('.sp-skin01,.sp-del,.sp-txt').addClass('happy-fadeIn');
+                                setTimeout(function () {
+                                    $('.happy-point').show();
+                                    $('.happy-point').addClass('happy-bounceInLeft');
+                                    setTimeout(function () {
+                                        $('.happy-point').addClass('happy-pointgo');
+                                    }, 2000);
+                                }, 500);
+                            }, 1000);
+                        }, 1000);
+                    }, 800);
+                };
+
+                /**
+                 * kiss操作AJax后台处理
+                 * @param {type} target
+                 * @returns {undefined}
+                 */
+                var kissOne = function (target) {
+                    var thisImg = target.children("img");
+                    var kissed = thisImg.attr("kissed");
+                    console.log(kissed == "true");
+                    if (kissed != "true") {
+                        $.ajax({
+                            url: '/employee/kiss',
+                            type: 'post',
+                            data: {
+                                id: thisImg.attr("employeeid")
+                            },
+                            success: function (data) {
+                                if (data.success) {
+                                    thisImg.attr("kissed", true);
+                                    var num = data.msg;
+                                    target.children("i").html(num);
+                                    if (unkiss.length !== 0) {
+                                        var id = thisImg.attr("employeeid");
+                                        kissme(id, num);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                };
+
+                /**
+                 * 点击人物层的操作：
+                 * 第一个是切换动画（打开弹出层，切换人物图片）
+                 * 第二个是执行一个ajax操作
+                 */
+                $('.sad ul li p').click(function () {
+                    clickOne($(this));
+                    kissOne($(this));
+                });
+
             })(jQuery);
 
-//            // 点击图片操作
-//            var imgClick = function (data) {
-//                var thisImg = $(data);
-//                var kiss = thisImg.attr("kissed");
-//                if (kiss == "true") {
-//                    alert("我脸都红了，不要再亲啦！");
-//                } else {
-//                    alert("谢谢您的香吻，我们京东一定不会辜负您的期望！");
-//                    thisImg.attr("kissed", true);
-//                    var id = thisImg.attr("employeeid");
-//                    if (unkiss.length !== 0) {
-//                        kissme(id);
-//                    }
-//                }
-//            };
-//
-//            // kiss操作，把已经做了kiss操作的图片放置到kisssed数组
-//            var kissme = function (id) {
-//                for (var i = 0; i < unkiss.length; i++) {
-//                    if (unkiss[i].id == id) {
-//                        // 把数据从unkiss中移动到kissed中
-//                        kissed.push(unkiss.splice(i, 1)[0]);
-//                    }
-//                }
-//            };
+            // kiss操作，把已经做了kiss操作的图片放置到kisssed数组
+            var kissme = function (id, num) {
+                console.log("id = " + id);
+                for (var i = 0; i < unkiss.length; i++) {
+                    if (unkiss[i].id == id) {
+                        // 把数据从unkiss中移动到kissed中
+                        var one = unkiss.splice(i, 1)[0];
+                        one.times = num;
+                        kissed.push(one);
+                    }
+                }
+            };
         </script>
     </body>
 </html>
