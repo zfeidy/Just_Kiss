@@ -56,9 +56,11 @@ exports.kiss = function (req, res) {
     console.log("-------------------");
     console.log(em);
     em.kiss(sessionid, function (err, data) {
-        if (data) {
-            res.json({success: true, msg: data});
+        if (err) {
+            console.log(err);
+            return res.json({success: false, msg: err});
         }
+        res.json({success: true, msg: data});
     });
 };
 
@@ -89,8 +91,10 @@ exports.random = function (req, res) {
  */
 exports.count = function (req, res) {
     Employee4Redis.count(function (err, data) {
-        console.log(err);
-        console.log(data);
+        if (err) {
+            console.log(err);
+            return res.json({success: false, msg: err});
+        }
         return res.json({success: true, msg: data});
     });
 };
@@ -153,7 +157,7 @@ var doAddWithRedis = function (req, res) {
         Employee4Redis.update(employee, employees, function (err, data) {
             if (err) {
                 console.log(err);
-                res.json({success: false, msg: err});
+                return res.json({success: false, msg: err});
             } else {
                 res.json({success: true, msg: "修改信息成功！"});
             }
@@ -190,7 +194,7 @@ var doAddWithMongo = function (req, res) {
         employee.save(function (err, data) {
             if (err) {
                 console.log(err);
-                res.json({success: false, msg: err});
+                return res.json({success: false, msg: err});
             }
             res.json({success: true, msg: data});
         });
@@ -206,11 +210,16 @@ var doAddWithMongo = function (req, res) {
  */
 var getRandomAll = function (sessionid, employees, res) {
     Employee4Redis.randomAll(sessionid, employees, function (err, employeeIds) {
+        if (err) {
+            console.log(err);
+            return res.json({success: false, msg: err});
+        }
         var re = Employee4Redis.fill(employees, employeeIds);
-        res.render('kissme/random', {
-            title: "随机出现",
-            employees: re
-        });
+        res.json({success: true, msg: re});
+//        res.render('kissme/random', {
+//            title: "随机出现",
+//            employees: re
+//        });
     });
 };
 
