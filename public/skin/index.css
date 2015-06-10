@@ -622,8 +622,6 @@ html, body, .common-wrapper {
       font-size: 22px;
       color: #96000b;
       margin: -26px 0px 0px 15px; }
-    .fore1 .login .loading-box {
-      margin-top: 4px; }
     .fore1 .login .loading {
       background: url(i/login-loading.png) no-repeat;
       width: 6px;

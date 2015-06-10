@@ -1,3 +1,4 @@
+var EventProxy = require("eventproxy");
 var redis = require('../common/redis');
 var cache = require('../common/cache');
 var setting = require('../config/setting');
@@ -31,27 +32,28 @@ module.exports = Employee;
  */
 Employee.prototype.kiss = function (sessionid, callback) {
     var employeeid = this.id;
+    
+    var ep = new EventProxy();
+    ep.fail(callback);
+
     // 用sortedset存储员工被kiss的数目，每kiss一次权值加1
-    redis.zincrby(kissme_rank, 1, employeeid, function (err, data) {
-        if (err) {
-            console.log(err);
-        }
+    redis.zincrby(kissme_rank, 1, employeeid, ep.doneLater('srem'));
+
+    ep.once("srem", function (data) {
+        callback(null, data);
         // rediskey，以sessionid为唯一标示符
         var kissme_session = "kissme_" + sessionid;
-        redis.srem(kissme_session, employeeid, function (sremerr, sremdata) {
-            if (sremerr) {
-                console.log(sremerr);
-            }
-            callback(sremdata);
-            // 如果当前session已经kiss过，就标识一下
-            var kissed_session = "kissed_" + sessionid;
-            redis.set(kissed_session, 1, function (adderr, adddata) {
-                if (adderr) {
-                    console.log(adderr);
-                }
-                console.log("已标识");
-            });
-        });
+        redis.srem(kissme_session, employeeid, ep.doneLater('set'));
+    });
+
+    ep.once("set", function (data) {
+        // 如果当前session已经kiss过，就标识一下
+        var kissed_session = "kissed_" + sessionid;
+        redis.set(kissed_session, 1, ep.doneLater('console'));
+    });
+
+    ep.once("console", function (data) {
+        console.log(data);
     });
 };
 
@@ -188,23 +190,25 @@ Employee.random = function (sessionid, employees, callback) {
  * @returns {undefined}
  */
 Employee.randomAll = function (sessionid, employees, callback) {
-
     // rediskey，以sessionid为唯一标示符
     var redis_key = "kissme_" + sessionid;
     // 一次从redis里面随机取出number个元素
     redis.srandmember(redis_key, number, function (err, data) {
         if (err) {
             console.log(err);
+            return callback(err);
         }
         // 如果结果集为空或者空数组
         if (!data || data.length === 0) {
             var kissed_session = "kissed_" + sessionid;
-            redis.get(kissed_session, function (geterr, getdata) {
-                if (geterr) {
-                    console.log(geterr);
+            redis.get(kissed_session, function (err, kissed) {
+                if (err) {
+                    console.log(err);
+                    return callback(err);
                 }
-                if (getdata == 1) {
-                    callback(null);
+                // 已经被赞过
+                if (kissed == 1) {
+                    return callback(null, []);
                 } else {
                     var result = [];
                     // 复制数组
@@ -217,21 +221,19 @@ Employee.randomAll = function (sessionid, employees, callback) {
                         _employees.splice(randomindex, 1);
                         size--;
                     }
+                    // 把所有员工的ID加入到redis缓存
                     redis.sadd(redis_key, getAllId(employees), function (err, data) {
                         if (err) {
                             console.log(err);
+                            return callback(err);
                         }
                     });
-                    if (callback) {
-                        callback(result);
-                    }
+                    callback(null, result);
                     console.log("randomAll result = " + result);
                 }
             });
         } else {
-            if (callback) {
-                callback(data);
-            }
+            callback(null, data);
             console.log("randomAll data = " + data);
         }
     });
@@ -287,7 +289,7 @@ Employee.fill = function (employees, employeeIds) {
  * @returns {undefined}
  */
 Employee.count = function (callback) {
-    redis.zrevrange(kissme_rank, 0, -1,'withscores', function (err, data) {
+    redis.zrevrange(kissme_rank, 0, -1, 'withscores', function (err, data) {
         if (err) {
             return callback(err);
         }
