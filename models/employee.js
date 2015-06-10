@@ -32,7 +32,7 @@ module.exports = Employee;
  */
 Employee.prototype.kiss = function (sessionid, callback) {
     var employeeid = this.id;
-    
+
     var ep = new EventProxy();
     ep.fail(callback);
 
@@ -148,6 +148,7 @@ Employee.random = function (sessionid, employees, callback) {
     redis.srandmember(redis_key, number, function (err, data) {
         if (err) {
             console.log(err);
+            return callback(err);
         }
         // 如果结果集为空或者空数组
         if (!data || data.length === 0) {
@@ -163,20 +164,22 @@ Employee.random = function (sessionid, employees, callback) {
             redis.sadd(redis_key, getUncheckId(_employees), function (err, data) {
                 if (err) {
                     console.log(err);
+                    return callback(err);
                 }
                 console.log(data);
             });
             if (callback) {
-                callback(result);
+                callback(null, result);
             }
         } else {
             redis.srem(redis_key, data, function (err, delnum) {
                 if (err) {
                     console.log(err);
+                    return callback(err);
                 }
             });
             if (callback) {
-                callback(data);
+                callback(null, data);
             }
         }
     });
@@ -302,7 +305,7 @@ var randomIndex = function (size) {
     return Math.floor(Math.random() * size);
 };
 
-// 获取违背选中的对象
+// 获取未被选中的对象
 var getUncheckId = function (employees) {
     var uncheck = [];
     for (var i in employees) {
@@ -311,6 +314,7 @@ var getUncheckId = function (employees) {
     return uncheck;
 };
 
+// 获取所有的ID
 var getAllId = function (employees) {
     var all = [];
     for (var i in employees) {
