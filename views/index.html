@@ -336,6 +336,17 @@
                         render(random(employees));
                     }
                 };
+                
+                var init2 = function(){
+                    $.ajax({
+                        url:"/employee/random",
+                        type:"get",
+                        dataType:"json",
+                        success:function(data){
+                            render(data.msg);
+                        }
+                    });
+                };
 
                 /**
                  * 随机生成指定【4】个图片
@@ -433,7 +444,7 @@
                 };
 
                 // 初始化
-                init();
+                init2();
 
                 /**
                  * 点击图片后的操作
@@ -441,7 +452,8 @@
                  * @returns {undefined}
                  */
                 $(".change").click(function () {
-                    render(random(employees));
+//                    render(random(employees));
+                    init2();
                     changeSkin();
                 });
 
