@@ -312,7 +312,10 @@
                     type:"post",
                     dataType:"jsonp",
                     success:function(data){
-                        
+                        if(data.indexOf("9999") > 0){
+                            // "http://wq.jd.com/mlogin/h5v1/cpLogin_BJ?rurl="+encodeURIComponent(option.rurl)
+                            window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl="+encodeURIComponent(local)+"&appid=1";
+                        }
                     }
                 });
             })();
