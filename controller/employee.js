@@ -1,6 +1,9 @@
-var Employee4Mongo = require('../models/mongo').Employee;
-var Employee4Redis = require('../models/employee');
 var setting = require('../config/setting');
+var Employee4Mongo = {};
+if (setting.use_mongo) {
+    Employee4Mongo = require('../models/mongo').Employee;
+}
+var Employee4Redis = require('../models/employee');
 var EventProxy = require("eventproxy");
 var globalemployee;
 
@@ -50,7 +53,9 @@ exports.kiss = function (req, res) {
         times: req.body.times,
         kissed: req.body.kissed
     });
-    em.kiss(sessionid, function (data) {
+    console.log("-------------------");
+    console.log(em);
+    em.kiss(sessionid, function (err, data) {
         if (data) {
             res.json({success: true, msg: data});
         }
@@ -200,7 +205,7 @@ var doAddWithMongo = function (req, res) {
  * @returns {undefined}
  */
 var getRandomAll = function (sessionid, employees, res) {
-    Employee4Redis.randomAll(sessionid, employees, function (employeeIds) {
+    Employee4Redis.randomAll(sessionid, employees, function (err, employeeIds) {
         var re = Employee4Redis.fill(employees, employeeIds);
         res.render('kissme/random', {
             title: "随机出现",
