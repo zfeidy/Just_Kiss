@@ -297,24 +297,24 @@
         <script type="text/javascript" src="/javascripts/swiper.min.js"></script>
         <script type="text/javascript" src="/javascripts/slide.js"></script>
         <script type="text/javascript" src="/javascripts/jquery-1.11.3.min.js"></script>
-        <script type="text/javascript" src="/javascripts/jquery-1.11.3.min.js"></script>
         <script type="text/javascript">
             var employees = [], // 员工缓存数组
                     unkiss = [], // 未被kiss的数组
                     kissed = [], // 已被kiss的数组
+                    changeAttr = [], // 皮肤数组
                     number = 4;  // 一次显示的数组长度
-            changeAttr = []; // 皮肤数组
+            var useFrontRandom = false;// 是否使用前端随机
 
             (function () {
                 var local = window.location.pathname;
                 $.ajax({
-                    url:"http://wq.jd.com/mlogin/wxv3/LoginCheckJsonp?callback=validateLoginCallback",
-                    type:"post",
-                    dataType:"jsonp",
-                    success:function(data){
-                        if(data.indexOf("9999") > 0){
+                    url: "http://wq.jd.com/mlogin/wxv3/LoginCheckJsonp?callback=validateLoginCallback",
+                    type: "post",
+                    dataType: "jsonp",
+                    success: function (data) {
+                        if (data.indexOf("9999") > 0) {
                             // "http://wq.jd.com/mlogin/h5v1/cpLogin_BJ?rurl="+encodeURIComponent(option.rurl)
-                            window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl="+encodeURIComponent(local)+"&appid=1";
+                            window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl=" + encodeURIComponent(local) + "&appid=1";
                         }
                     }
                 });
@@ -335,17 +335,6 @@
                     } else {
                         render(random(employees));
                     }
-                };
-                
-                var init2 = function(){
-                    $.ajax({
-                        url:"/employee/random",
-                        type:"get",
-                        dataType:"json",
-                        success:function(data){
-                            render(data.msg);
-                        }
-                    });
                 };
 
                 /**
@@ -389,10 +378,12 @@
                 var render = function (checked) {
                     $.each(checked, function (i) {
                         var em = checked[i];
+                        console.log(em.slogan);
                         $("p#kiss_employee_0" + (i + 1) + " > img").attr("src", em.images.sad);
                         $("p#kiss_employee_0" + (i + 1) + " > img").attr("employeeid", em.id);
                         $("p#kiss_employee_0" + (i + 1) + " > img").attr("happyurl", em.images.happy);
                         $("p#kiss_employee_0" + (i + 1) + " > img").attr("kissed", em.kissed);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("slogan", em.slogan);
                         $("i.kiss-num0" + (i + 1)).html(em.times);
                         if (em.kissed == true) {
                             $('.sad ul li p').eq(i).addClass("hadClick");
@@ -443,21 +434,6 @@
                     return false;
                 };
 
-                // 初始化
-                init2();
-
-                /**
-                 * 点击图片后的操作
-                 * @param {type} data
-                 * @returns {undefined}
-                 */
-                $(".change").click(function () {
-//                    render(random(employees));
-                    init2();
-                    changeSkin();
-                });
-
-
                 /**
                  * 点击人物切换动画的操作
                  * @param {type} target 点击人物所对应的P节点
@@ -468,7 +444,9 @@
                         return;
                     }
                     var happyurl = target.children('img').attr("happyurl");
+                    var slogan = target.children('img').attr("slogan");
                     $('.sad-popup .sp-people img').attr("src", happyurl);
+                    $('.sad-popup .sp-txt').html(slogan);
                     target.addClass('hadClick');
                     target.children('.sad-kiss').show();
                     /*$('.sad-swing-hide').removeClass();*/
@@ -495,29 +473,33 @@
                 };
 
                 /**
-                 * kiss操作AJax后台处理
-                 * @param {type} target
+                 * kiss操作
+                 * @param {employee} target
+                 * @param {boolean} type true标示前端随机结果的kiss操作，false标示后端随机
                  * @returns {undefined}
                  */
-                var kissOne = function (target) {
+                var kissOne = function (target, type) {
                     var thisImg = target.children("img");
                     var kissed = thisImg.attr("kissed");
-                    console.log(kissed == "true");
+                    var emid = thisImg.attr("employeeid");
                     if (kissed != "true") {
                         $.ajax({
                             url: '/employee/kiss',
                             type: 'post',
                             data: {
-                                id: thisImg.attr("employeeid")
+                                id: emid,
+                                withline: true
                             },
                             success: function (data) {
                                 if (data.success) {
                                     thisImg.attr("kissed", true);
                                     var num = data.msg;
                                     target.children("i").html(num);
-                                    if (unkiss.length !== 0) {
-                                        var id = thisImg.attr("employeeid");
-                                        kissme(id, num);
+                                    if (type) {
+                                        if (unkiss.length !== 0) {
+                                            var id = emid;
+                                            kissme(id, num);
+                                        }
                                     }
                                 }
                             }
@@ -526,13 +508,56 @@
                 };
 
                 /**
+                 * 后台随机算法进行初始化
+                 * @returns {undefined}
+                 */
+                var init2 = function () {
+                    $.ajax({
+                        url: "/employee/random",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            line: 2
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                render(data.msg);
+                            }
+                        }
+                    });
+                };
+
+                // 初始化
+                (function () {
+                    if (useFrontRandom) {
+                        init();
+                    } else {
+                        init2();
+                    }
+                })();
+
+                /**
+                 * 点击图片后的操作
+                 * @param {type} data
+                 * @returns {undefined}
+                 */
+                $(".change").click(function () {
+                    if (useFrontRandom) {
+                        render(random(employees));
+                    } else {
+                        init2();
+                    }
+                    changeSkin();
+                });
+
+                /**
                  * 点击人物层的操作：
                  * 第一个是切换动画（打开弹出层，切换人物图片）
                  * 第二个是执行一个ajax操作
                  */
                 $('.sad ul li p').click(function () {
                     clickOne($(this));
-                    kissOne($(this));
+                    kissOne($(this), useFrontRandom);
                 });
 
             })(jQuery);

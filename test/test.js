@@ -61,3 +61,7 @@ function f4() {
 }
 
 f1().then(f2).then(f3).then(f4);
+
+data = [];
+console.log(!data || data.length === 0 || data === null);
+console.log((!data && data.length === 0) || data === null);

@@ -1,13 +1,604 @@
-<% include header.html %>
-<body style="background-image: url(/images/1.jpg)">
-    <div class="container-fluid">
-        <div class="page-header">
-            <h1>员工</h1>
+<!DOCTYPE html>
+<html>
+    <head lang="zh">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8" /> 
+        <meta content="yes" name="apple-mobile-web-app-capable"/>
+        <meta content="yes" name="apple-touch-fullscreen"/>
+        <meta content="telephone=no" name="format-detection"/>
+        <meta content="black" name="apple-mobile-web-app-status-bar-style">
+        <meta content="#ffffff" name="msapplication-TileColor" />
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+        <title>kissing you</title>
+        <link rel="stylesheet" href="/skin/index.css"/>
+    </head> 
+    <body>  
+        <div class="swiper-container">
+            <div class="music-box">
+                <div class="music music-roll" id="music"></div>
+                <div class="heart1 heart-propagation"></div>
+                <div class="heart2 heart-propagation"></div>
+                <div class="heart3 heart-propagation"></div>
+                <div class="heart4 heart-propagation"></div>
+            </div>
+            <!--  <audio id="bgaudio" src="bg-music.mp3" autoplay="autoplay" style="visibility:hidden;position:absolute;"></audio> -->
+            <audio id="kissaudio" src="/audio/kiss.wav" style="visibility:hidden;position:absolute;"></audio>
+            <audio id="kissesaudio" src="/audio/kisses.wav" style="visibility:hidden;position:absolute;"></audio>
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="section fore1">
+                        <div class="login">
+                            <div class="loading-box">
+                                <div class="loading"></div>
+                                <div class="loading"></div>
+                                <div class="loading"></div>
+                                <div class="loading"></div>
+                                <div class="loading"></div>
+                                <div class="loading"></div>
+                                <div class="loading"></div>
+                                <div class="loading"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="section fore2">
+                        <div class="kiss-text"><img src="skin/i/kiss-text-1.png" alt=""><div class="kiss kiss-pulse"></div></div>
+                        <div class="kiss-blue"><img src="skin/i/kiss-blue.png" alt=""></div>
+                        <div class="it-text"><div class="it-text-shadow"></div><img src="skin/i/it-text.png" alt=""></div>
+                        <div class="tap-tip"><img src="skin/i/tap-everwhere.png" alt=""></div>
+                        <div class="logo"></div>
+                        <div class="up"></div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="section fore3">
+                        <div class="spell-wo hide"></div>
+                        <div class="spell-men hide"></div>
+                        <div class="square">
+                            <div class="container">
+                                <div class="square2">
+                                    <div class="we-txt hide"></div>
+                                    <div class="we-6 hide"></div>
+                                    <div class="we-dot hide"></div>
+                                    <div class="we-1 hide"></div>
+                                    <div class="we-8 hide"></div>
+                                    <div class="clr"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="logo"></div>
+                        <div class="up"></div>
+                    </div>
+                </div>
+                <!-- <div class="swiper-slide">
+                    <div class="section fore4">
+                        <div class="box">
+                            <div class="txt1" id="txt1"></div>
+                            <div class="txt2" id="txt2"></div>
+                            <div class="txt3" id="txt3"></div>
+                        </div>
+                        <div class="logo"></div>
+                        <div class="up"></div>
+                    </div>
+                </div> -->
+
+                <div class="swiper-slide">
+                    <div class="section fore5">
+                        <div class="run-man1" id="run-man1">
+                            <div class="arm" id="arm"></div>
+                        </div>
+                        <div class="box">
+                            <div class="run-encourage" id="run-encourage"></div>
+                            <div class="run-type1 hide fl run-type" id="run-type1"></div>
+                            <div class="run-type2 hide fr run-type" id="run-type2"></div>
+                            <div class="run-type3 hide fl run-type" id="run-type3"></div>
+                            <div class="run-type4 hide fr run-type" id="run-type4"></div>
+                        </div>
+
+                        <div class="logo"></div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="section fore7">
+                        <div class="line-w" style="display:none;">
+                            <div class="line-kiss line03-kiss"></div>
+                            <div class="line-heart">
+                                <img src="skin/i/line-heart.png" >
+                                <span class="line-pic"></span>
+                            </div>
+                            <div class="line-fighting"></div>
+                            <div class="line01 line01-1" style="left:7%; top:16%;">
+                                <img src="skin/i/line03.png" >
+                            </div>
+                            <div class="line01 line01-2" style="left:50%; top:23%;">
+                                <img src="skin/i/line03-2.png" >
+                            </div>
+                            <div class="line01 line01-3" style="left:7%; top:36%;">
+                                <img src="skin/i/line03-3.png" >
+                            </div>
+                            <div class="line01 line01-4" style="left:50%; top:45%;">
+                                <img src="skin/i/line03-4.png">
+                            </div>
+                            <div class="line01 line01-5" style="left:7%; top:55%;">
+                                <img src="skin/i/line03-5.png">
+                            </div>
+                            <div class="line01 line01-6" style="left:50%; top:65%;"> 
+
+                                <img src="skin/i/line03-6.png">
+                            </div>
+                        </div>
+                        <div class="line-w" style="display:none;">
+                            <div class="line-kiss line04-kiss"></div>
+                            <div class="line-heart">
+                                <img src="skin/i/line-heart.png" >
+                                <span class="line-pic"></span>
+                            </div>
+                            <div class="line-fighting"></div>
+                            <div class="line01 line01-1" style="left:7%; top:16%;">
+                                <img src="skin/i/line04.png" >
+                            </div>
+                            <div class="line01 line01-2" style="left:50%; top:23%;">
+                                <img src="skin/i/line04-2.png" >
+                            </div>
+                            <div class="line01 line01-3" style="left:7%; top:36%;">
+                                <img src="skin/i/line04-3.png" >
+                            </div>
+                            <div class="line01 line01-4" style="left:50%; top:45%;">
+                                <img src="skin/i/line04-4.png">
+                            </div>
+                            <div class="line01 line01-5" style="left:7%; top:55%;">
+                                <img src="skin/i/line04-5.png">
+                            </div>
+                            <div class="line01 line01-6" style="left:50%; top:65%;"> 
+
+                                <img src="skin/i/line04-6.png">
+                            </div>
+                        </div>
+                        <div class="line-w" style="display:block;">
+                            <div class="line-kiss"></div>
+                            <div class="line-heart">
+                                <img src="skin/i/line-heart.png" >
+                                <span class="line-pic"></span>
+                            </div>
+                            <div class="line-fighting"></div>
+                            <div class="line01 line01-1" style="left:7%; top:16%;">
+                                <img src="skin/i/line01.png" >
+                            </div>
+                            <div class="line01 line01-2" style="left:50%; top:23%;">
+                                <img src="skin/i/line01-2.png" >
+                            </div>
+                            <div class="line01 line01-3" style="left:7%; top:36%;">
+                                <img src="skin/i/line01-3.png" >
+                            </div>
+                            <div class="line01 line01-4" style="left:50%; top:45%;">
+                                <img src="skin/i/line01-4.png">
+                            </div>
+                            <div class="line01 line01-5" style="left:7%; top:55%;">
+                                <img src="skin/i/line01-5.png">
+                            </div>
+
+                        </div>
+                        <div class="line-w" style="display:none;">
+                            <div class="line-kiss line02-kiss"></div>
+                            <div class="line-heart">
+                                <img src="skin/i/line-heart.png" >
+                                <span class="line-pic"></span>
+                            </div>
+                            <div class="line-fighting"></div>
+                            <div class="line01 line01-1" style="left:7%; top:16%;">
+                                <img src="skin/i/line02.png" >
+                            </div>
+                            <div class="line01 line01-2" style="left:50%; top:23%;">
+                                <img src="skin/i/line02-2.png" >
+                            </div>
+                            <div class="line01 line01-3" style="left:7%; top:36%;">
+                                <img src="skin/i/line02-3.png" >
+                            </div>
+                            <div class="line01 line01-4" style="left:50%; top:45%;">
+                                <img src="skin/i/line02-4.png">
+                            </div>
+                            <div class="line01 line01-5" style="left:7%; top:55%;">
+                                <img src="skin/i/line02-5.png">
+                            </div>
+                            <div class="line01 line01-6" style="left:50%; top:65%;"> 
+                                <img src="skin/i/line02-6.png">
+                            </div>
+                        </div>
+                        <div class="up"></div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="section fore6">
+                        <div class="sad">
+                            <ul>
+                                <li>
+                                    <p class="fl" id="kiss_employee_01">
+                                        <span class="sad-cover" style="top:15px;">
+                                            <img src="skin/i/sad01-cover.png" >
+                                        </span>
+                                        <img src="skin/i/sad01.png"  class="sad-swing sad-swing-hide">
+                                        <i class="kiss-num01">32000</i>
+                                        <b class="sad-point" style="top:22%;"></b>
+                                        <span class="sad-kiss zoomIn">
+                                            <img src="skin/i/sad-kiss.png" >
+                                        </span>
+                                    </p> 
+                                    <p class="fr" id="kiss_employee_02">
+                                        <span class="sad-cover">
+                                            <img src="skin/i/sad02-cover.png">
+                                        </span> 
+                                        <span class="sad03-cover"></span>
+                                        <img src="skin/i/sad02.png"  class="sad02-swing sad-swing-hide">
+                                        <i class="kiss-num02">123</i>
+                                        <b class="sad-point"></b>
+                                        <span class="sad-kiss zoomIn">
+                                            <img src="skin/i/sad-kiss.png" >
+                                        </span>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p class="fl" id="kiss_employee_03">
+                                        <span class="sad-cover" style="left:-9px;">
+                                            <img src="skin/i/sad03-cover.png">
+                                        </span>
+                                        <img src="skin/i/sad03.png"  class="sad03-swing sad-swing-hide"  >
+                                        <i class="kiss-num03">100000</i>
+                                        <b class="sad-point" style="top:32%;"></b>
+                                        <span class="sad-kiss zoomIn">
+                                            <img src="skin/i/sad-kiss.png" >
+                                        </span>
+                                    </p>
+                                    <p class="fr" id="kiss_employee_04">
+                                        <span class="sad-cover" style="top:-16px; left:4px;">
+                                            <img src="skin/i/sad04-cover.png" >
+                                        </span>
+                                        <img src="skin/i/sad04.png"  class="sad04-swing sad-swing-hide" >
+                                        <i class="kiss-num04">56</i>
+                                        <b class="sad-point"></b>
+                                        <span class="sad-kiss zoomIn">
+                                            <img src="skin/i/sad-kiss.png" >
+                                        </span>
+                                    </p>
+                                </li>
+                            </ul>
+                            <div class="change-w">
+                                <div class="change-flash">
+                                    <img src="skin/i/change01.png">
+                                </div>
+                                <a href="javascript:;" class="change">
+                                    <img src="skin/i/change02.png">
+                                </a>
+                            </div>
+
+                        </div>
+                        <!-- <div class="sad-w"></div> -->
+                        <div class="sad-popup">
+                            <div class="sad-popup-in">
+                                <div class="sp-kiss happy-bounceIn">
+                                    <img src="skin/i/sad-kiss.png" width="160" height="140">
+                                </div>
+                                <div class="sp-skin01">
+                                    <img src="skin/i/popup-skin01.png" >
+                                </div>
+                                <div class="sp-people">
+                                    <img src="skin/i/happy-people01.png" >
+                                </div>
+                                <div class="sp-del">
+                                    <img src="skin/i/happy-del.png" >
+                                </div>
+                                <div class="sp-txt sp-txt-rotate">
+                                    我词穷了我词穷了我词穷了我词穷了~#@￥我是2货我是2货我是2货~~
+                                </div>
+                            </div>
+                            <div class="happy-point">
+                                <div class="hp-prize" style="display:block;">
+                                    <p>初次见面，送你</p>
+                                    <p>自营图书图书券</p>
+                                    <p class="hp-big">满1000减200</p>
+                                </div>
+                                <div class="hp-noprize" style="display:none;">
+                                    <p>&nbsp;&nbsp;香吻不停</p>
+                                    <p>&nbsp;&nbsp;礼送不停</p>
+                                </div>
+                                <div class="hp-nochange" style="display:none;">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;分享好友</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;让香吻来得</p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;更猛烈些吧！</p>
+                                </div>
+                            </div>
+                            <div class="happy-goto618">
+                                <a href="http://wqs.jd.com/promote/2015/618yxgfen/nanzhuang.html?PTAG=17007.4.4&ptype=1&wc_scene=1">
+                                    进入618会场
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class=".able-responsive">
-            <table class="table table-striped">
-                ...
-            </table>
-        </div>
-    </div>
-    <% include footer.html %>
+        <script type="text/javascript" src="/javascripts/zepto.min.js"></script>
+        <script type="text/javascript" src="/javascripts/swiper.min.js"></script>
+        <script type="text/javascript" src="/javascripts/slide.js"></script>
+        <script type="text/javascript" src="/javascripts/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript">
+            var employees = [], // 员工缓存数组
+                    unkiss = [], // 未被kiss的数组
+                    kissed = [], // 已被kiss的数组
+                    changeAttr = [], // 皮肤数组
+                    number = 4;  // 一次显示的数组长度
+            var useFrontRandom = false;// 是否使用前端随机
+
+            (function () {
+                var local = window.location.pathname;
+                $.ajax({
+                    url: "http://wq.jd.com/mlogin/wxv3/LoginCheckJsonp?callback=validateLoginCallback",
+                    type: "post",
+                    dataType: "jsonp",
+                    success: function (data) {
+                        if (data.indexOf("9999") > 0) {
+                            // "http://wq.jd.com/mlogin/h5v1/cpLogin_BJ?rurl="+encodeURIComponent(option.rurl)
+                            window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl=" + encodeURIComponent(local) + "&appid=1";
+                        }
+                    }
+                });
+            })();
+
+            (function ($) {
+                /**
+                 * 初始化操作，如果当前没有缓存，就使用ajax拉取数据
+                 * @returns {undefined}
+                 */
+                var init = function () {
+                    // 当前没缓存，直接使用ajax加载
+                    if (employees.length === 0) {
+                        $.getJSON("/cache/kiss_jd_employee", function (data) {
+                            employees = data;
+                            render(random(employees));
+                        });
+                    } else {
+                        render(random(employees));
+                    }
+                };
+
+                /**
+                 * 随机生成指定【4】个图片
+                 * @param {type} employees
+                 * @returns {Array}
+                 */
+                var random = function (employees) {
+                    // 申明临时对象，用于存储生成的对象数据
+                    var tmp = [];
+                    // 如果unkiss和kissed都为空，把employees赋值到unkiss中
+                    if (unkiss.length === 0 && kissed.length === 0)
+                        unkiss = employees.slice(0);
+                    var unkiss_length = unkiss.length;
+                    // 如果unkiss的数组长度足设定值，就先从kissed数组中补充
+                    var kiss_length = unkiss_length < number ? number - unkiss_length : 0;
+                    var _kissed = kissed.slice(0);
+                    for (var i = 0; i < kiss_length; i++) {
+                        // 随机一个数据出来
+                        var employee = _kissed.splice(randomIndex(_kissed.length), 1)[0];
+                        // 设置kissed状态
+                        employee.kissed = true;
+                        tmp.push(employee);
+                    }
+                    // 从unkiss中填充数据到tmp
+                    unkiss_length = unkiss_length < number ? unkiss_length : number;
+                    var _unkiss = unkiss.slice(0);
+                    for (var i = 0; i < unkiss_length; i++) {
+                        // 随机一个数据出来
+                        var employee = _unkiss.splice(randomIndex(_unkiss.length), 1)[0];
+                        tmp.push(employee);
+                    }
+                    return tmp;
+                };
+
+                /**
+                 * 渲染界面
+                 * @param {type} checked
+                 * @returns {undefined}
+                 */
+                var render = function (checked) {
+                    $.each(checked, function (i) {
+                        var em = checked[i];
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("src", em.images.sad);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("employeeid", em.id);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("happyurl", em.images.happy);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("kissed", em.kissed);
+                        $("p#kiss_employee_0" + (i + 1) + " > img").attr("slogan", em.slogan);
+                        $("i.kiss-num0" + (i + 1)).html(em.times);
+                        if (em.kissed == true) {
+                            $('.sad ul li p').eq(i).addClass("hadClick");
+                            $('.sad ul li p').eq(i).children('.sad-kiss').show();
+                        } else {
+                            $('.sad ul li p').eq(i).removeClass("hadClick");
+                            $('.sad ul li p').eq(i).children('.sad-kiss').hide();
+                        }
+                    });
+                };
+
+                /**
+                 * 获取一个小于size的随机整数
+                 * @param {type} size
+                 * @returns {Number}
+                 */
+                var randomIndex = function (size) {
+                    return Math.floor(Math.random() * size);
+                };
+
+                /**
+                 * 切换皮肤功能
+                 * @param {type} event
+                 * @returns {undefined}
+                 */
+                var changeSkin = function () {
+                    changeAttr = [];
+                    for (var i = 0; i < 4; i++) {
+                        var changeNum = parseInt(Math.random() * 10);
+                        if (!findNum(changeNum, changeAttr)) {
+                            changeAttr.push(changeNum);
+                        } else {
+                            i--;
+                        }
+                    }
+                    $('.sad-cover img').each(function (index) {
+                        $('.sad-cover img').eq(index).attr("src", "skin/i/sad0" + changeAttr[index] + "-cover.png");
+                    });
+
+                };
+
+                var findNum = function (num, arr) {
+                    for (var i = 0; i < arr.length; i++) {
+                        if (num == arr[i]) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+
+                /**
+                 * 点击人物切换动画的操作
+                 * @param {type} target 点击人物所对应的P节点
+                 * @returns {undefined}
+                 */
+                var clickOne = function (target) {
+                    if (target.hasClass('hadClick')) {
+                        return;
+                    }
+                    var happyurl = target.children('img').attr("happyurl");
+                    var slogan = target.children('img').attr("slogan");
+                    $('.sad-popup .sp-people img').attr("src", happyurl);
+                    $('.sad-popup .sp-txt').html(slogan);
+                    target.addClass('hadClick');
+                    target.children('.sad-kiss').show();
+                    /*$('.sad-swing-hide').removeClass();*/
+                    target.find('.sad-swing-hide').removeClass();
+                    $("#kissaudio")[0].play();
+                    setTimeout(function () {
+                        $('.sad-popup').show();
+                        /*弹窗动画*/
+                        setTimeout(function () {
+                            $('.sp-people').show();
+                            $('.sp-people').addClass('happy-tada');
+                            setTimeout(function () {
+                                $('.sp-skin01,.sp-del,.sp-txt').show();
+                                $('.sp-skin01,.sp-del,.sp-txt').addClass('happy-fadeIn');
+                                setTimeout(function () {
+                                    $('.happy-point').show();
+                                    $('.happy-point').addClass('happy-bounceInLeft');
+                                    setTimeout(function () {
+                                        $('.happy-point').addClass('happy-pointgo');
+                                    }, 2000);
+                                }, 500);
+                            }, 1000);
+                        }, 1000);
+                    }, 800);
+                };
+
+                /**
+                 * kiss操作
+                 * @param {employee} target
+                 * @param {boolean} type true标示前端随机结果的kiss操作，false标示后端随机
+                 * @returns {undefined}
+                 */
+                var kissOne = function (target, type) {
+                    var thisImg = target.children("img");
+                    var kissed = thisImg.attr("kissed");
+                    var emid = thisImg.attr("employeeid");
+                    if (kissed != "true") {
+                        $.ajax({
+                            url: '/employee/kiss',
+                            type: 'post',
+                            data: {
+                                id: emid,
+                                withline: true
+                            },
+                            success: function (data) {
+                                if (data.success) {
+                                    thisImg.attr("kissed", true);
+                                    var num = data.msg;
+                                    target.children("i").html(num);
+                                    if (type) {
+                                        if (unkiss.length !== 0) {
+                                            var id = emid;
+                                            kissme(id, num);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                };
+
+                /**
+                 * 后台随机算法进行初始化
+                 * @returns {undefined}
+                 */
+                var init2 = function () {
+                    var line = $(".swiper-slide .box").attr("idx");
+                    $.ajax({
+                        url: "/employee/random",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            line: line ? (line + 1) : 1
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                render(data.msg);
+                            }
+                        }
+                    });
+                };
+
+                // 初始化
+                (function () {
+                    if (useFrontRandom) {
+                        init();
+                    } else {
+                        init2();
+                    }
+                })();
+
+                /**
+                 * 点击图片后的操作
+                 * @param {type} data
+                 * @returns {undefined}
+                 */
+                $(".change").click(function () {
+                    if (useFrontRandom) {
+                        render(random(employees));
+                    } else {
+                        init2();
+                    }
+                    changeSkin();
+                });
+
+                /**
+                 * 点击人物层的操作：
+                 * 第一个是切换动画（打开弹出层，切换人物图片）
+                 * 第二个是执行一个ajax操作
+                 */
+                $('.sad ul li p').click(function () {
+                    clickOne($(this));
+                    kissOne($(this), useFrontRandom);
+                });
+
+            })(jQuery);
+
+            // kiss操作，把已经做了kiss操作的图片放置到kisssed数组
+            var kissme = function (id, num) {
+                console.log("id = " + id);
+                for (var i = 0; i < unkiss.length; i++) {
+                    if (unkiss[i].id == id) {
+                        // 把数据从unkiss中移动到kissed中
+                        var one = unkiss.splice(i, 1)[0];
+                        one.times = num;
+                        kissed.push(one);
+                    }
+                }
+            };
+        </script>
+    </body>
+</html>
