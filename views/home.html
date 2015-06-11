@@ -445,7 +445,6 @@
                     $('.sad-cover img').each(function (index) {
                         $('.sad-cover img').eq(index).attr("src", "skin/i/sad0" + changeAttr[index] + "-cover.png");
                     });
-
                 };
 
                 var findNum = function (num, arr) {
@@ -542,7 +541,7 @@
                         type: "post",
                         dataType: "json",
                         data: {
-                            line: line ? (line + 1) : 1
+                            line: line ? (Number(line) + 1) : 1
                         },
                         success: function (data) {
                             if (data.success) {
@@ -584,7 +583,6 @@
                     clickOne($(this));
                     kissOne($(this), useFrontRandom);
                 });
-
             })(jQuery);
 
             // kiss操作，把已经做了kiss操作的图片放置到kisssed数组
@@ -599,6 +597,7 @@
                     }
                 }
             };
+
         </script>
     </body>
 </html>
