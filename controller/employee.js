@@ -1,4 +1,5 @@
 var setting = require('../config/setting');
+var logger = require('../common/logger');
 var Employee4Mongo = {};
 if (setting.use_mongo) {
     Employee4Mongo = require('../models/mongo').Employee;
@@ -53,11 +54,10 @@ exports.kiss = function (req, res) {
         times: req.body.times,
         kissed: req.body.kissed
     });
-    console.log("-------------------");
-    console.log(em);
-    em.kiss(sessionid, function (err, data) {
+    var withline = req.body.withline;
+    em.kiss(sessionid, withline, function (err, data) {
         if (err) {
-            console.log(err);
+            logger.error("异常: ", err);
             return res.json({success: false, msg: err});
         }
         res.json({success: true, msg: data});
@@ -84,6 +84,26 @@ exports.random = function (req, res) {
 };
 
 /**
+ * 根据战线随机生成员工操作
+ * @param {type} req
+ * @param {type} res
+ * @returns {undefined}
+ */
+exports.randomWithLine = function (req, res) {
+    var sessionid = req.sessionID;
+    var line = req.body.line;
+    if (globalemployee) {
+        getRandomAllWithLine(sessionid, line, globalemployee, res);
+    } else {
+        // 初始化用户
+        Employee4Redis.init(function (employees) {
+            globalemployee = employees.slice(0);
+            getRandomAllWithLine(sessionid, line, employees, res);
+        });
+    }
+};
+
+/**
  * 员工点赞统计
  * @param {type} req
  * @param {type} res
@@ -92,10 +112,24 @@ exports.random = function (req, res) {
 exports.count = function (req, res) {
     Employee4Redis.count(function (err, data) {
         if (err) {
-            console.log(err);
+            logger.error("异常: ", err);
             return res.json({success: false, msg: err});
         }
-        return res.json({success: true, msg: data});
+        var jsonRes = [];
+        for (var i = 0; i < data.length; i += 2) {
+            jsonRes.push({
+                id: data[i],
+                num: data[i + 1]
+            });
+        }
+
+        Employee4Redis.countTotal(function (err, data) {
+            if (err) {
+                logger.error("异常: ", err);
+                return res.json({success: false, msg: err});
+            }
+            return res.json({success: true, total: (data === null ? 0 : data), msg: jsonRes});
+        });
     });
 };
 
@@ -115,6 +149,7 @@ var doAddWithRedis = function (req, res) {
     var ep = new EventProxy();
 
     ep.fail(function (err) {
+        logger.error("异常: ", err);
         return res.json({success: false, msg: err});
     });
 
@@ -145,7 +180,7 @@ var doAddWithRedis = function (req, res) {
     ep.once("save", function (employees) {
         Employee4Redis.add(employee, employees, function (err) {
             if (err) {
-                console.log(err);
+                logger.error("异常: ", err);
                 res.json({success: false, msg: err});
             } else {
                 res.json({success: true, msg: "添加信息成功！"});
@@ -156,7 +191,7 @@ var doAddWithRedis = function (req, res) {
     ep.once("update", function (employees) {
         Employee4Redis.update(employee, employees, function (err, data) {
             if (err) {
-                console.log(err);
+                logger.error("异常: ", err);
                 return res.json({success: false, msg: err});
             } else {
                 res.json({success: true, msg: "修改信息成功！"});
@@ -193,7 +228,7 @@ var doAddWithMongo = function (req, res) {
     ep.once("save", function () {
         employee.save(function (err, data) {
             if (err) {
-                console.log(err);
+                logger.error("异常: ", err);
                 return res.json({success: false, msg: err});
             }
             res.json({success: true, msg: data});
@@ -211,10 +246,32 @@ var doAddWithMongo = function (req, res) {
 var getRandomAll = function (sessionid, employees, res) {
     Employee4Redis.randomAll(sessionid, employees, function (err, employeeIds) {
         if (err) {
-            console.log(err);
+            logger.error("异常: ", err);
             return res.json({success: false, msg: err});
         }
         var re = Employee4Redis.fill(employees, employeeIds);
+        res.json({success: true, msg: re});
+//        res.render('kissme/random', {
+//            title: "随机出现",
+//            employees: re
+//        });
+    });
+};
+
+/**
+ * 渲染随机后的结果集【根据战线随机】
+ * @param {type} sessionid 当前的session
+ * @param {type} employees 当前所有的员工信息，是一个数组
+ * @param {type} res resquest请求对象
+ * @returns {undefined}
+ */
+var getRandomAllWithLine = function (sessionid, line, employees, res) {
+    Employee4Redis.randomAllWithLine(sessionid, line, employees, function (err, employeeIds) {
+        if (err) {
+            logger.error("异常: ", err);
+            return res.json({success: false, msg: err});
+        }
+        var re = Employee4Redis.fillWithLine(employees, line, employeeIds);
         res.json({success: true, msg: re});
 //        res.render('kissme/random', {
 //            title: "随机出现",

@@ -6,6 +6,10 @@ exports.index = function (req, res) {
     res.render('index', {title: '亲吻我吧'});
 };
 
+exports.home = function (req, res) {
+    res.render('home', {title: '亲吻我吧'});
+};
+
 exports.login = function (req, res) {
     res.render('login', {title: '用户登陆'});
 };
@@ -32,11 +36,4 @@ exports.doLogin = function (req, res) {
 exports.logout = function (req, res) {
     req.session.user = null;
     res.redirect('/');
-};
-
-exports.home = function (req, res) {
-    if (req.session.user)
-        res.render('home', {title: '主页'});
-    else
-        return res.redirect('/login');
 };

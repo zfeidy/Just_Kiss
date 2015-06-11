@@ -14,15 +14,15 @@ exports.info = function () {
 };
 
 exports.debug = function () {
-    writeLog("  ", 'debug', arguments);
+    writeLog('  ', 'debug', arguments);
 };
 
 exports.warn = function () {
-    writeLog("  ", 'warn', arguments);
+    writeLog('  ', 'warn', arguments);
 };
 
 exports.error = function () {
-    writeLog("  ", 'error', arguments);
+    writeLog('  ', 'error', arguments);
 };
 
 var env = process.env.NODE_ENV || "development";
