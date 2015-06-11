@@ -295,13 +295,10 @@ Employee.fill = function (employees, employeeIds) {
  * @returns {undefined}
  */
 Employee.randomAllWithLine = function (sessionid, line, employees, callback) {
-    employees = filterIdWithLine(line, employees);
-    var startid = line * groupsize, endid = (line + 1) * groupsize - 1;
+    var startid = line * groupsize, endid = (Number(line) + 1) * groupsize - 1;
     var redis_key = "kissll_" + sessionid;
     // 一次从redis里面随机取出number个元素
     redis.zrangebyscore(redis_key, startid, endid, function (err, data) {
-        console.log("randomAllWithLine 303");
-        console.log(data);
         if (err) {
             logger.error("异常: ", err);
             return callback(err);
@@ -315,14 +312,14 @@ Employee.randomAllWithLine = function (sessionid, line, employees, callback) {
                     return callback(err);
                 }
                 // 已经被赞过
-                if (kissed == 1 || employees === null || employees.length === 0) {
+                var _employees = filterIdWithLine(line, employees);
+                if (kissed == 1 || _employees === null || _employees.length === 0) {
                     return callback(null, []);
                 } else {
-                    var result = randomArray(employees, number, true);
-                    console.log("322");
-                    console.log(result);
+                    var result = randomArray(_employees, number, true);
+                    var newValue = getAllIdWithLine(employees);
                     // 把所有员工的ID加入到redis缓存
-                    redis.zadd(redis_key, getAllIdWithLine(employees), function (err, data) {
+                    redis.zadd(redis_key, newValue, function (err, data) {
                         if (err) {
                             logger.error("异常: ", err);
                             return callback(err);
@@ -334,9 +331,6 @@ Employee.randomAllWithLine = function (sessionid, line, employees, callback) {
         } else {
             var length = data.length;
             var result = randomArray(data, length < number ? length : number);
-            console.log("result 335");
-            console.log(data);
-            console.log(result);
             callback(null, result);
         }
     });
@@ -445,6 +439,7 @@ var getAllIdWithLine = function (employees) {
     var all = [];
     for (var i in employees) {
         // 把ID自己作为权值
+//        all.push(Number(employees[i].line * groupsize) + Number(i));
         all.push(employees[i].id);
         all.push(employees[i].id);
     }
