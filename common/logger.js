@@ -1,8 +1,8 @@
 var fs = require('fs');
 var config = require('../config/setting');
 
-if (!fs.existsSync("./log")) {
-    fs.mkdirSync("./log");
+if (!fs.existsSync(config.log_path)) {
+    fs.mkdirSync(config.log_path);
 }
 
 exports.log = function () {
