@@ -8,11 +8,11 @@ var visit = require('./middleware/visits');
 module.exports = function (app) {
 
     // 基本操作
-    app.get('/', user.index);
+//    app.get('/', user.index);
+    app.get('/', user.home);
     app.get('/login', user.login);
     app.post('/login', user.doLogin);
     app.get('/logout', user.logout);
-    app.get('/home', user.home);
     app.get('/chat', user.chat);
 
     // kissme [ejs渲染]
@@ -28,6 +28,6 @@ module.exports = function (app) {
     app.get('/employee/kiss', employee.kisslocal);
     app.post('/employee/kiss', employee.kiss);
     app.get('/employee/random', visit.count, employee.random);
+    app.post('/employee/random', visit.count, employee.randomWithLine);
     app.get('/employee/count', employee.count);
-//    app.get('/employee/random', employee.random);
 };
