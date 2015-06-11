@@ -1413,10 +1413,41 @@ html, body, .common-wrapper {
     position: absolute;
     top: 53%;
     right: 3.125%;
-    width: 60%;
-    display: none; }
-    .sad-popup .happy-point img {
-      max-width: 100%; }
+    width: 166px;
+    height: 140px;
+    display: none;
+    /* padding:56px 0px 0 44px; */
+    padding-top: 58px;
+    overflow: hidden;
+    background: url(i/coupon.png) no-repeat;
+    background-size: 166px 140px;
+    color: #a3000b;
+    font-size: 12px; }
+    .sad-popup .happy-point p {
+      padding-top: 4px;
+      -webkit-transform: rotate3d(0, 0, 1, -7deg);
+      transform: rotate3d(0, 0, 1, -7deg);
+      width: 74px;
+      margin: 0 auto;
+      white-space: nowrap; }
+    .sad-popup .happy-point .hp-big {
+      font-size: 14px; }
+    .sad-popup .happy-point .hp-noprize {
+      font-size: 17px; }
+  .sad-popup .happy-goto618 {
+    width: 37.5%;
+    height: 34px;
+    background: #94000a;
+    box-shadow: 0px 0px 7px #7d0008;
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    margin-left: -19%;
+    text-align: center;
+    font-size: 16px;
+    line-height: 34px; }
+    .sad-popup .happy-goto618 a {
+      color: #fff; }
 
 @-webkit-keyframes sad-swing {
   0% {
@@ -1796,8 +1827,8 @@ html, body, .common-wrapper {
     transform: translate3d(0px, 0, 0); }
 
   50% {
-    -webkit-transform: translate3d(-10px, 0, 0);
-    transform: translate3d(-10px, 0, 0); }
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0); }
 
   100% {
     -webkit-transform: translate3d(0px, 0, 0);
@@ -1808,8 +1839,8 @@ html, body, .common-wrapper {
     transform: translate3d(0px, 0, 0); }
 
   50% {
-    -webkit-transform: translate3d(-10px, 0, 0);
-    transform: translate3d(-10px, 0, 0); }
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0); }
 
   100% {
     -webkit-transform: translate3d(0px, 0, 0);
@@ -1837,29 +1868,29 @@ html, body, .common-wrapper {
   position: relative; }
 
 .line-kiss {
-  width: 80px;
-  height: 130px;
+  width: 132px;
+  height: 111px;
   background: url(i/line-kiss.png) no-repeat;
-  background-size: 80px 130px;
+  background-size: 132px 111px;
   position: absolute;
-  top: -8%;
+  top: -4%;
   left: 50%;
-  margin-left: -40px;
+  margin-left: -66px;
   z-index: 10;
   opacity: 0;
   /* display: none; */ }
 
 .line02-kiss {
   background: url(i/line02-kiss.png) no-repeat;
-  background-size: 80px 130px; }
+  background-size: 132px 111px; }
 
 .line03-kiss {
   background: url(i/line03-kiss.png) no-repeat;
-  background-size: 80px 130px; }
+  background-size: 132px 111px; }
 
 .line04-kiss {
   background: url(i/line04-kiss.png) no-repeat;
-  background-size: 80px 130px; }
+  background-size: 132px 111px; }
 
 .line-fighting {
   width: 127px;

@@ -1,10 +1,13 @@
 var EventProxy = require("eventproxy");
+var logger = require('../common/logger');
 var redis = require('../common/redis');
 var cache = require('../common/cache');
 var setting = require('../config/setting');
 var number = setting.number;
+var groupsize = setting.groupsize;
 var kissme_employee = "kiss_jd_employee";
 var kissme_rank = "kissme_rank";
+var kissed_counter = "kissed_counter";
 
 /**
  * 声明一个员工对象
@@ -30,7 +33,7 @@ module.exports = Employee;
  * @param {function} callback
  * @returns {undefined}
  */
-Employee.prototype.kiss = function (sessionid, callback) {
+Employee.prototype.kiss = function (sessionid, withline, callback) {
     var employeeid = this.id;
 
     var ep = new EventProxy();
@@ -42,8 +45,13 @@ Employee.prototype.kiss = function (sessionid, callback) {
     ep.once("srem", function (data) {
         callback(null, data);
         // rediskey，以sessionid为唯一标示符
-        var kissme_session = "kissme_" + sessionid;
-        redis.srem(kissme_session, employeeid, ep.doneLater('set'));
+        if (withline == true) {
+            var kissme_session = "kissme_" + sessionid;
+            redis.srem(kissme_session, employeeid, ep.doneLater('set'));
+        } else {
+            var kissme_session = "kissll_" + sessionid;
+            redis.zrem(kissme_session, employeeid, ep.doneLater('set'));
+        }
     });
 
     ep.once("set", function (data) {
@@ -53,7 +61,7 @@ Employee.prototype.kiss = function (sessionid, callback) {
     });
 
     ep.once("console", function (data) {
-        console.log(data);
+//        logger.info(data);
     });
 };
 
@@ -84,7 +92,8 @@ Employee.add = function (employee, employees, callback) {
     employees.push(employee);
     cache.setToLocal(kissme_employee, JSON.stringify(employees), function (err) {
         if (err) {
-            callback(err);
+            logger.error("异常: ", err);
+            return callback(err);
         }
         callback(null);
     });
@@ -108,6 +117,7 @@ Employee.update = function (employee, employees, callback) {
     }
     cache.setToLocal(kissme_employee, JSON.stringify(employees), function (err, data) {
         if (err) {
+            logger.error("异常: ", err);
             return callback(err);
         }
         callback(null, data);
@@ -141,17 +151,18 @@ Employee.init = function (callback) {
  * @returns {undefined}
  */
 Employee.random = function (sessionid, employees, callback) {
-    var result = [];
     // rediskey，以sessionid为唯一标示符
     var redis_key = "kissme_" + sessionid;
     // 一次从redis里面随机取出number个元素
     redis.srandmember(redis_key, number, function (err, data) {
         if (err) {
-            console.log(err);
+            logger.error("异常: ", err);
             return callback(err);
         }
         // 如果结果集为空或者空数组
         if (!data || data.length === 0) {
+
+            var result = [];
             var _employees = employees.slice(0);
             var size = _employees.length;
             for (var i = 0; i < number; i++) {
@@ -163,10 +174,10 @@ Employee.random = function (sessionid, employees, callback) {
 
             redis.sadd(redis_key, getUncheckId(_employees), function (err, data) {
                 if (err) {
-                    console.log(err);
+                    logger.error("异常: ", err);
                     return callback(err);
                 }
-                console.log(data);
+                logger.info(data);
             });
             if (callback) {
                 callback(null, result);
@@ -174,7 +185,7 @@ Employee.random = function (sessionid, employees, callback) {
         } else {
             redis.srem(redis_key, data, function (err, delnum) {
                 if (err) {
-                    console.log(err);
+                    logger.error("异常: ", err);
                     return callback(err);
                 }
             });
@@ -198,46 +209,36 @@ Employee.randomAll = function (sessionid, employees, callback) {
     // 一次从redis里面随机取出number个元素
     redis.srandmember(redis_key, number, function (err, data) {
         if (err) {
-            console.log(err);
+            logger.error("异常: ", err);
             return callback(err);
         }
-        // 如果结果集为空或者空数组
+        // 如果结果空数组
         if (!data || data.length === 0) {
             var kissed_session = "kissed_" + sessionid;
             redis.get(kissed_session, function (err, kissed) {
                 if (err) {
-                    console.log(err);
+                    logger.error("异常: ", err);
                     return callback(err);
                 }
                 // 已经被赞过
                 if (kissed == 1) {
                     return callback(null, []);
                 } else {
-                    var result = [];
-                    // 复制数组
-                    var _employees = employees.slice(0);
-                    var size = _employees.length;
-                    for (var i = 0; i < number; i++) {
-                        var randomindex = randomIndex(size);
-                        result.push(_employees[randomindex].id);
-                        // 删除当前数据
-                        _employees.splice(randomindex, 1);
-                        size--;
-                    }
+                    var result = randomArray(employees, number, true);
                     // 把所有员工的ID加入到redis缓存
                     redis.sadd(redis_key, getAllId(employees), function (err, data) {
                         if (err) {
-                            console.log(err);
+                            logger.error("异常: ", err);
                             return callback(err);
                         }
                     });
                     callback(null, result);
-                    console.log("randomAll result = " + result);
+                    logger.info("randomAll result = " + result);
                 }
             });
         } else {
             callback(null, data);
-            console.log("randomAll data = " + data);
+            logger.info("randomAll data = " + data);
         }
     });
 };
@@ -287,6 +288,106 @@ Employee.fill = function (employees, employeeIds) {
 };
 
 /**
+ * 随机产生显示员工方法
+ * @param {type} sessionid
+ * @param {type} employees
+ * @param {type} callback
+ * @returns {undefined}
+ */
+Employee.randomAllWithLine = function (sessionid, line, employees, callback) {
+    employees = filterIdWithLine(line, employees);
+    var startid = line * groupsize, endid = (line + 1) * groupsize - 1;
+    var redis_key = "kissll_" + sessionid;
+    // 一次从redis里面随机取出number个元素
+    redis.zrangebyscore(redis_key, startid, endid, function (err, data) {
+        console.log("randomAllWithLine 303");
+        console.log(data);
+        if (err) {
+            logger.error("异常: ", err);
+            return callback(err);
+        }
+        // 如果结果集为空或者空数组
+        if (!data || data.length === 0) {
+            var kissed_session = "kissed_" + sessionid;
+            redis.get(kissed_session, function (err, kissed) {
+                if (err) {
+                    logger.error("异常: ", err);
+                    return callback(err);
+                }
+                // 已经被赞过
+                if (kissed == 1 || employees === null || employees.length === 0) {
+                    return callback(null, []);
+                } else {
+                    var result = randomArray(employees, number, true);
+                    console.log("322");
+                    console.log(result);
+                    // 把所有员工的ID加入到redis缓存
+                    redis.zadd(redis_key, getAllIdWithLine(employees), function (err, data) {
+                        if (err) {
+                            logger.error("异常: ", err);
+                            return callback(err);
+                        }
+                    });
+                    callback(null, result);
+                }
+            });
+        } else {
+            var length = data.length;
+            var result = randomArray(data, length < number ? length : number);
+            console.log("result 335");
+            console.log(data);
+            console.log(result);
+            callback(null, result);
+        }
+    });
+};
+
+/**
+ * 填充员工随机数组，如果employeeIds的长度小于number，则在employees数组中再随机生成剩下的员工
+ * @param {Employee} employees 所有的员工，是一个数组
+ * @param {Number} employeeIds 已经随机生成的未被kiss的员工ID数组
+ * @returns {Employee} 总数为number的随机生成员工数组
+ */
+Employee.fillWithLine = function (employees, line, employeeIds) {
+    var employee = [];
+    // 先复制一个员工数组，以免随机操作数组引起原来数组的改变
+    var _employees = employees.slice(0);
+    // 先从员工数组里面找出已经随机出来的员工信息，同时剔除从这些员工
+    for (var j in employeeIds) {
+        var target = employeeIds[j];
+        for (var i in _employees) {
+            var source = _employees[i];
+            if (source.id == target) {
+                // 标识为未被kiss的状态
+                source.kissed = false;
+                // 删除当前元素
+                _employees.splice(i, 1);
+                employee.push(source);
+            }
+        }
+    }
+    // 如果生成的信息已经等于需要生成的数量，直接返回
+    if (employee.length === number) {
+        return employee;
+    } else {
+        // 随机生成剩下的员工信息
+        _employees = filterIdWithLine(line, _employees);
+        var prelength = employee.length;
+        var size = _employees.length;
+        for (var k = 0; k < number - prelength && size > 0; k++) {
+            var randomindex = randomIndex(size);
+            // 标识为已经被kiss的状态
+            _employees[randomindex].kissed = true;
+            employee.push(_employees[randomindex]);
+            // 删除当前数据
+            _employees.splice(randomindex, 1);
+            size--;
+        }
+        return employee;
+    }
+};
+
+/**
  * 员工被kiss数目统计
  * @param {type} callback
  * @returns {undefined}
@@ -294,6 +395,22 @@ Employee.fill = function (employees, employeeIds) {
 Employee.count = function (callback) {
     redis.zrevrange(kissme_rank, 0, -1, 'withscores', function (err, data) {
         if (err) {
+            logger.error("异常: ", err);
+            return callback(err);
+        }
+        callback(null, data);
+    });
+};
+
+/**
+ * 总访问次数统计
+ * @param {type} callback
+ * @returns {undefined}
+ */
+Employee.countTotal = function (callback) {
+    redis.get(kissed_counter, function (err, data) {
+        if (err) {
+            logger.error("异常: ", err);
             return callback(err);
         }
         callback(null, data);
@@ -321,4 +438,50 @@ var getAllId = function (employees) {
         all.push(employees[i].id);
     }
     return all;
+};
+
+// 根据战线获取员工ID【使用sortedset存储，员工ID作为权值】
+var getAllIdWithLine = function (employees) {
+    var all = [];
+    for (var i in employees) {
+        // 把ID自己作为权值
+        all.push(employees[i].id);
+        all.push(employees[i].id);
+    }
+    return all;
+};
+
+//过滤某一战线员工
+var filterIdWithLine = function (line, employees) {
+    var lineArray = [];
+    for (var i in employees) {
+        if (employees[i].line == line) {
+            lineArray.push(employees[i]);
+        }
+    }
+    return lineArray;
+};
+
+/**
+ * 从一个数组里面随机出有指定数量成员ID的子数组
+ * @param {type} employees
+ * @returns {Array|randomArray.result}
+ */
+var randomArray = function (employees, number, isId) {
+    var result = [];
+    // 复制数组
+    var _employees = employees.slice(0);
+    var size = _employees.length;
+    for (var i = 0; i < number && size > 0; i++) {
+        var randomindex = randomIndex(size);
+        if (isId) {
+            result.push(_employees[randomindex].id);
+        } else {
+            result.push(_employees[randomindex]);
+        }
+        // 删除当前数据
+        _employees.splice(randomindex, 1);
+        size--;
+    }
+    return result;
 };

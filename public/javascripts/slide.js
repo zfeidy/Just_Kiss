@@ -11,8 +11,14 @@
     })
     //music
     $("#music").on("tap", function (event) {
+        var bgaudio = $("#bgaudio")[0];
         $(this).toggleClass("music-roll")
                 .siblings().toggleClass("heart-propagation");
+        /*if($(this).hasClass("music-roll")){
+         bgaudio.play();
+         }else{
+         bgaudio.pause();
+         }*/
     });
 
 
@@ -72,7 +78,7 @@
             if (isclicked == true) {
                 return;
             }
-            $("audio").attr("src", "audio/kiss.wav")
+            $("#kissesaudio")[0].play();
             isclicked = true;
             var kissNum = 0;
             var t1 = 50;
@@ -199,10 +205,12 @@
         });
         $(".run-type").on('tap', function (event) {
             var idx = $(".run-type").index($(this));
+            console.log(idx);
+            $(".swiper-slide .box").attr("idx", idx);
             $(".line-w").css("display", "none").eq(idx).css("display", "block");
             swiper.unlockSwipes();
-            swiper.activeIndex = 5;
-            swiper.slideTo(5, 500, false);
+            swiper.activeIndex = 4;
+            swiper.slideTo(4, 500, false);
             setTimeout(function () {
                 sectionAnimate5($(".line-w").eq(idx))
             }, 500)
@@ -239,12 +247,11 @@
 //            if ($(this).hasClass('hadClick')) {
 //                return;
 //            }
-//            var happyurl = $(this).children('img').attr("data");
-//            $('.sad-popup .sp-people img').attr("src", happyurl);
 //            $(this).addClass('hadClick');
 //            $(this).children('.sad-kiss').show();
 //            /*$('.sad-swing-hide').removeClass();*/
 //            $(this).find('.sad-swing-hide').removeClass();
+//            $("#kissaudio")[0].play();
 //            setTimeout(function () {
 //                $('.sad-popup').show();
 //                /*弹窗动画*/
@@ -340,17 +347,17 @@
                 case 2:
                     sectionAnimate3();
                     break;
+                    /*case 3:
+                     sectionAnimate2();
+                     break;*/
                 case 3:
-                    sectionAnimate2();
-                    break;
-                case 4:
                     sectionAnimate4();
                     break;
-                case 5:
+                case 4:
                     swiper.unlockSwipeToNext();
                     sectionAnimate5();
                     break;
-                case 6:
+                case 5:
                     sectionAnimate6();
                     swiper.lockSwipeToNext();
                     break;
