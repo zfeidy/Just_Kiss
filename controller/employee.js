@@ -250,11 +250,29 @@ var getRandomAll = function (sessionid, employees, res) {
             return res.json({success: false, msg: err});
         }
         var re = Employee4Redis.fill(employees, employeeIds);
-        res.json({success: true, msg: re});
-//        res.render('kissme/random', {
-//            title: "随机出现",
-//            employees: re
-//        });
+        Employee4Redis.count(function (err, data) {
+            if (err) {
+                logger.error("异常: ", err);
+                return res.json({success: false, msg: err});
+            }
+            var jsonRes = [];
+            for (var i = 0; i < data.length; i += 2) {
+                jsonRes.push({
+                    id: data[i],
+                    num: data[i + 1]
+                });
+            }
+            
+            for(var i in re){
+                for(var j in jsonRes){
+                    if(re[i].id == jsonRes[j].id){
+                        re[i].times = jsonRes[j].num;
+                    }
+                }
+            }
+            res.json({success: true, msg: re});
+            
+        });
     });
 };
 
@@ -266,17 +284,36 @@ var getRandomAll = function (sessionid, employees, res) {
  * @returns {undefined}
  */
 var getRandomAllWithLine = function (sessionid, line, employees, res) {
+    
     Employee4Redis.randomAllWithLine(sessionid, line, employees, function (err, employeeIds) {
         if (err) {
             logger.error("异常: ", err);
             return res.json({success: false, msg: err});
         }
         var re = Employee4Redis.fillWithLine(employees, line, employeeIds);
-        res.json({success: true, msg: re});
-//        res.render('kissme/random', {
-//            title: "随机出现",
-//            employees: re
-//        });
+        Employee4Redis.count(function (err, data) {
+            if (err) {
+                logger.error("异常: ", err);
+                return res.json({success: false, msg: err});
+            }
+            var jsonRes = [];
+            for (var i = 0; i < data.length; i += 2) {
+                jsonRes.push({
+                    id: data[i],
+                    num: data[i + 1]
+                });
+            }
+            
+            for(var i in re){
+                for(var j in jsonRes){
+                    if(re[i].id == jsonRes[j].id){
+                        re[i].times = jsonRes[j].num;
+                    }
+                }
+            }
+            res.json({success: true, msg: re});
+            
+        });
     });
 };
 
