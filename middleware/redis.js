@@ -1,4 +1,4 @@
-var config = require("../config/test");
+var config = require("../config/redis");
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
@@ -6,7 +6,7 @@ var fs = require('fs');
 exports.initRedisCluster = function () {
     console.log("init redis cluster start......");
 // 初始化redis集群
-//    initRedis();
+    initRedis();
     console.log("init redis cluster end！");
 };
 
@@ -41,15 +41,19 @@ var initRedis = function () {
                         });
                     }
                 }
-                config.cluster = opts;
-                var newConfig = "var config = " + JSON.stringify(config);
-                newConfig += ";\n";
-                newConfig += "module.exports = config;";
-                fs.writeFile('../config/test.js', newConfig, function (err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
+                if (opts.length > 0) {
+                    config.redis_host = opts[0].host;
+                    config.redis_port = opts[0].port;
+                    config.cluster = opts;
+                    var newConfig = "var config = " + JSON.stringify(config);
+                    newConfig += ";\n";
+                    newConfig += "module.exports = config;";
+                    fs.writeFile('../config/redis.js', newConfig, function (err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
             });
         }).on('error', function (e) {
             console.log("获取失败: " + e.message);
