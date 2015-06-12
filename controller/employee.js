@@ -91,6 +91,8 @@ exports.random = function (req, res) {
  */
 exports.randomWithLine = function (req, res) {
     var sessionid = req.sessionID;
+    console.log(94);
+    console.log(sessionid);
     var line = req.body.line;
     if (globalemployee) {
         getRandomAllWithLine(sessionid, line, globalemployee, res);

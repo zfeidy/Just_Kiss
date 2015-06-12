@@ -29,7 +29,6 @@ exports.kiss = function (req, res) {
         kissed: req.body.kissed
     });
     em.kiss(sessionid, function (data) {
-        console.log("kiss    =    " + data);
         if (data) {
             res.json({success: true, msg: data});
         }
