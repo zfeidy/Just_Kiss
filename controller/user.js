@@ -23,6 +23,8 @@ exports.doLogin = function (req, res) {
         name: config.admin,
         password: config.password
     });
+    console.log(utility.md5(req.body.username));
+    console.log(utility.md5(req.body.password));
     if (utility.md5(req.body.username) === user.name &&
             utility.md5(req.body.password) === user.password) {
         req.session.user = user;

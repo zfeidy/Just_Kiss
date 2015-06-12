@@ -18,6 +18,7 @@ exports.list = function (req, res) {
 };
 
 exports.add = function (req, res) {
+    console.log("111111111111");
     res.render("employees/add", {
         title: "员工"
     });
