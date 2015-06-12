@@ -5,7 +5,7 @@ var fs = require('fs');
 
 exports.initRedisCluster = function () {
     console.log("init redis cluster start......");
-// 初始化redis集群
+    // 初始化redis集群
     initRedis();
     console.log("init redis cluster end！");
 };
