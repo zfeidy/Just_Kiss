@@ -56,7 +56,7 @@ exports.setToLocal = setToLocal;
 
 // 初始化数据
 var getFromLocal = function (key, callback) {
-    console.log(cachepath + '/' + key);
+    console.log(path.join(cachepath + '/' + key));
     fs.readFile(path.join(cachepath + '/' + key), 'utf-8', function (err, filedata) {
         if (err)
             getFromRedis(key, function (redisdata) {
