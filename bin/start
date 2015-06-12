@@ -7,7 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('comeonbaby:server');
 var http = require('http');
-var cluster = require('cluster');
 var os = require('os');
 
 /**
