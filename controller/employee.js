@@ -45,6 +45,9 @@ exports.kisslocal = function (req, res) {
  */
 exports.kiss = function (req, res) {
     var sessionid = req.sessionID;
+    if(sessionid){
+        return res.json({success: false, msg: err});
+    }
     var em = new Employee4Redis({
         id: req.body.id,
         name: req.body.name,
@@ -91,6 +94,8 @@ exports.random = function (req, res) {
  */
 exports.randomWithLine = function (req, res) {
     var sessionid = req.sessionID;
+    console.log("78");
+    console.log(sessionid);
     var line = req.body.line;
     if (globalemployee) {
         getRandomAllWithLine(sessionid, line, globalemployee, res);
