@@ -1,12 +1,13 @@
 var config = require('../config/redis');
 var Redis = require('ioredis');
-
 // 初始化redis
 var client = new Redis({
-    port: config.redis_port,
     host: config.redis_host,
-    db: config.redis_db
+    port: config.redis_port,
+    family: 4,
+    db: config.redis_db,
+    password: config.redis_auth,
+    enableReadyCheck: false 
 });
-
 // 导出redis
-exports = module.exports = client;
+exports = module.exports = client; 
