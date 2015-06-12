@@ -9,6 +9,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+// 初始化redis集群
+require('./middleware/redis').initRedisCluster();
 // session模块
 var session = require('express-session');
 // redis session
@@ -45,13 +48,18 @@ app.use(cookieParser("kiss618"));
 app.use(express.static(path.join(__dirname, 'public')));
 // 定义日志和输出级别
 app.use(logger('dev'));
+
+var rs = new RedisStore({
+    port: redisConfig.redis_port,
+    host: redisConfig.redis_host,
+    pass: redisConfig.redis_auth,
+    no_ready_check: true
+});
 // 设置 Session
 app.use(session({
-    secret: redisConfig.session_secret,
-    store: new RedisStore({
-        port: redisConfig.redis_port,
-        host: redisConfig.redis_host
-    }),
+    name: 'kiss618',
+    secret: redisConfig.redis_aut,
+    store: rs,
     resave: true,
     saveUninitialized: true,
     cookie: {
@@ -59,7 +67,6 @@ app.use(session({
         expires: new Date(Date.now() + 1000 * 60 * 60 * setting.expires)
     }
 }));
-
 // 使用路由
 router(app);
 // 404错误处理
