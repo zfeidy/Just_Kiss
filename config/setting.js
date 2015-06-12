@@ -10,8 +10,8 @@ var config = {
     log_path: '/log',
     // 程序运行的端口
     port: 3000,
-    admin: "21232f297a57a5a743894a0e4a801fc3",
-    password: "21232f297a57a5a743894a0e4a801fc3",
+    admin: "cc95bfd3be35ec81e0b331a058118569",
+    password: "08822cd8f3fd4cca5a20e5a08a8b65b3",
     upload: {
         path: path.join(__dirname, '../public/upload/'),
         url: 'public/upload/'
