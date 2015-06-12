@@ -1,13 +1,14 @@
 var config = require("../config/redis");
+var logger = require('../common/logger');
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
 
 exports.initRedisCluster = function () {
-    console.log("init redis cluster start......");
+    logger.debug("init redis cluster start......");
     // 初始化redis集群
     initRedis();
-    console.log("init redis cluster end！");
+    logger.debug("init redis cluster end！");
 };
 
 var sleep = function (sleepTime) {
@@ -26,7 +27,7 @@ var initRedis = function () {
         };
         console.log(options);
         var getRedisReq = http.request(options, function (res) {
-            console.log("get redis");
+            logger.debug("getRedisReq");
             res.setEncoding('utf8');
             res.on('data', function (chunk) {
                 console.log(chunk);
@@ -56,11 +57,11 @@ var initRedis = function () {
                 }
             });
         }).on('error', function (e) {
-            console.log("获取失败: " + e.message);
-            console.log(e);
+            logger.error("获取失败: " + e.message);
+            logger.debug(e);
         });
         getRedisReq.end();
     } else {
-        console.log("loading...");
+        logger.info("loading...");
     }
 };
