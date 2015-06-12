@@ -58,7 +58,7 @@ var rs = new RedisStore({
 // 设置 Session
 app.use(session({
     name: 'kiss618',
-    secret: redisConfig.redis_aut,
+    secret: redisConfig.redis_auth,
     store: rs,
     resave: true,
     saveUninitialized: true,
@@ -71,7 +71,6 @@ app.use(session({
 router(app);
 // 404错误处理
 app.use(error.errorPage);
-
 // 开发环境，500错误处理和错误堆栈跟踪
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
