@@ -15,6 +15,5 @@ var client = new Redis({
     enableReadyCheck: false
 });
 
-console.log(client);
 // 导出redis
 exports = module.exports = client; 
