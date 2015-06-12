@@ -1435,19 +1435,20 @@ html, body, .common-wrapper {
     .sad-popup .happy-point .hp-noprize {
       font-size: 17px; }
   .sad-popup .happy-goto618 {
-    width: 37.5%;
+    width: 100%;
     height: 34px;
-    background: #94000a;
-    box-shadow: 0px 0px 7px #7d0008;
+    padding: 0 13%;
     position: absolute;
     bottom: 3%;
-    left: 50%;
-    margin-left: -19%;
+    left: 0%;
     text-align: center;
     font-size: 16px;
     line-height: 34px; }
     .sad-popup .happy-goto618 a {
-      color: #fff; }
+      color: #fff;
+      background: #94000a;
+      box-shadow: 0px 0px 7px #7d0008;
+      padding: 0 7%; }
 
 @-webkit-keyframes sad-swing {
   0% {
@@ -2140,21 +2141,22 @@ html, body {
       height: auto; }
   .fore2 .it-text {
     visibility: hidden;
-    width: 85.9375%;
+    width: 64%;
     position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -42.96875%;
-    background-size: 100% 100%; }
-    .fore2 .it-text .it-text-shadow {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: url(i/it-text-shadow.png) no-repeat;
-      background-size: 100% 100%;
-      opacity: 0; }
+    left: 51%;
+    top: 47%;
+    margin-left: -32%;
+    background-size: 100% 100%;
+    /* .it-text-shadow{
+    	position: absolute;
+    	left: 0;
+    	top:0;
+    	width: 100%;
+    	height: 100%;
+    	background: url(i/it-text-shadow.png) no-repeat;
+    	background-size: 100% 100%;
+    	opacity: 0;
+    } */ }
     .fore2 .it-text img {
       position: relative;
       z-index: 1;
@@ -2166,16 +2168,16 @@ html, body {
     width: 26.25%;
     left: 50%;
     top: 50%;
-    z-index: 10;
-    animation-name: pulse;
-    -webkit-animation-name: pulse;
-    animation-duration: 1.5s;
-    -webkit-animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    -webkit-animation-iteration-count: infinite; }
+    z-index: 10; }
     .fore2 .tap-tip img {
       width: 100%;
-      height: auto; }
+      height: auto;
+      animation-name: pulse;
+      -webkit-animation-name: pulse;
+      animation-duration: 1.5s;
+      -webkit-animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+      -webkit-animation-iteration-count: infinite; }
   .fore2 .flash {
     -webkit-animation-name: flash;
     animation-name: flash;
@@ -2209,6 +2211,24 @@ pulse
   bottom: -90px;
   background: url(i/kiss.png) no-repeat;
   background-size: 75px 65px;
+  animation-name: pulse;
+  -webkit-animation-name: pulse;
+  animation-duration: 1.5s;
+  -webkit-animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite; }
+
+.tap-tip:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 45px;
+  height: 40px;
+  background: url(i/kiss.png) no-repeat;
+  background-size: 45px 40px;
+  right: 38px;
+  top: -162px;
+  bottom: auto;
   animation-name: pulse;
   -webkit-animation-name: pulse;
   animation-duration: 1.5s;
