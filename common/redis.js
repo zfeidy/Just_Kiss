@@ -1,11 +1,12 @@
 var config = require('../config/redis');
+var logger = require('../common/logger');
 var Redis = require('ioredis');
 var cluster = config.cluster;
 var index = 0;
 if (cluster && cluster instanceof Array && cluster.length > 0) {
 // 获取一个小于size的随机整数
     index = Math.floor(Math.random() * cluster.length);
-    console.log("use " + cluster[index].host + ":" + cluster[index].port);
+    logger.debug("使用 " + cluster[index].host + ":" + cluster[index].port);
 }
 // 初始化redis
 var client = new Redis({

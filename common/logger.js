@@ -1,62 +1,46 @@
 var fs = require('fs');
 var config = require('../config/setting');
+var tools = require('../common/tools');
 
 if (!fs.existsSync(config.log_path)) {
     fs.mkdirSync(config.log_path);
 }
 
 exports.log = function () {
-    writeLog('  ', 'info', arguments);
+    writeLog('info', arguments);
 };
-
 exports.info = function () {
-    writeLog('  ', 'info', arguments);
+    writeLog('info', arguments);
 };
-
 exports.debug = function () {
-    writeLog('  ', 'debug', arguments);
+    writeLog('debug', arguments);
 };
-
 exports.warn = function () {
-    writeLog('  ', 'warn', arguments);
+    writeLog('warn', arguments);
 };
-
 exports.error = function () {
-    writeLog('  ', 'error', arguments);
+    writeLog('error', arguments);
 };
 
 var env = process.env.NODE_ENV || "development";
 var consolePrint = config.debug && env !== 'test';
-var writeLog = function (prefix, logType, args) {
-    var filePrint = logType !== 'debug';
 
+var writeLog = function (level, args) {
+    var filePrint = level !== 'debug';
+    var infos = Array.prototype.slice.call(args);
+    var logStr = infos.join(" ");
+    var levelStr = level == 'error' ? "错误" : (level == 'warn' ? "警告" : (level == 'debug' ? "调试" : "一般"));
+    var line = packup(tools.formatDate(new Date())) + packup(levelStr) + packup(logStr);
+    
     if (!filePrint && !consolePrint) {
         return;
     }
 
-    var infos = Array.prototype.slice.call(args);
-    var logStr = infos.join(" ");
-
-    switch (logType) {
-        case "debug":
-            logStr = logStr.gray;
-            break;
-        case 'warn':
-            logStr = logStr.yellow;
-            break;
-        case 'error':
-            logStr = logStr.red;
-            break;
-    }
-
-    var line = prefix + logStr;
-
     if (filePrint) {
-        fs.appendFile('./log/' + env + '.log', line + "\n");
-    }
-    if (consolePrint) {
-        console.log(line);
+        fs.appendFile(config.log_path + env + '.log', line + "\n");
     }
 };
 
-
+var packup = function (msg) {
+    return "[" + msg + "]";
+};

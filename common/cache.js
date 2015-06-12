@@ -12,9 +12,11 @@ var getFromRedis = function (key, callback) {
     var t = new Date();
     redis.get(key, function (err, data) {
         if (err) {
+            logger.error("从redis获取数据异常", err);
             return callback(err);
         }
         if (!data) {
+            logger.info("从redis获取数据为空", err);
             return callback();
         }
         data = JSON.parse(data);
@@ -23,7 +25,8 @@ var getFromRedis = function (key, callback) {
         callback(data);
         setToLocal(key, data, function (err, data) {
             if (err) {
-                logger.debug('Cache', 'set', key, (duration + 'ms').green);
+                logger.error("文件本地存储异常", err);
+                logger.error('Cache', 'set', key, (duration + 'ms').green);
             }
         });
     });
@@ -40,11 +43,13 @@ exports.setToRedis = setToRedis;
 var setToLocal = function (key, data, callback) {
     fs.writeFile(path.join(cachepath + '/' + key), data, function (err) {
         if (err) {
+            logger.error("写入文件异常", err);
             return callback(err);
         }
         // 存储到本地的同时存储到redis
         setToRedis(key, data, function (err, data) {
             if (err) {
+                logger.error("存储数据异常", err);
                 return callback(err);
             }
             callback(null, data);
@@ -56,9 +61,10 @@ exports.setToLocal = setToLocal;
 
 // 初始化数据
 var getFromLocal = function (key, callback) {
-    console.log(path.join(cachepath + '/' + key));
+    logger.log("加载数据", path.join(cachepath + '/' + key));
     fs.readFile(path.join(cachepath + '/' + key), 'utf-8', function (err, filedata) {
         if (err)
+            logger.error("读取文件异常", err);
             getFromRedis(key, function (redisdata) {
                 callback(redisdata);
             });
