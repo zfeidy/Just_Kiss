@@ -11,6 +11,12 @@ exports.authUser = function (req, res, next) {
     if (req.cookies['kiss_user']) {
         return next();
     }
+    
+    if (req.session.user) {
+        ep.emit('get_user', req.session.user);
+    } else {
+        return res.redirect('/login');
+    }
 
     ep.all('get_user', function (user) {
         if (!user) {
@@ -20,9 +26,4 @@ exports.authUser = function (req, res, next) {
         next();
     });
 
-    if (req.session.user) {
-        ep.emit('get_user', req.session.user);
-    } else {
-        return res.redirect('/login');
-    }
 };

@@ -8,6 +8,7 @@ exports.count = function (req, res, next) {
     redis.get(kissed_session, function (err, data) {
         if(err){
             logger.error("异常: ", err);
+            return next(err);
         }
         if (!data) {
             redis.set(kissed_session, 0, function (err, data) {
