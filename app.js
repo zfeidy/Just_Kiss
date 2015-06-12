@@ -41,7 +41,7 @@ if (setting.debug) {
 
 // 定义数据解析器，将client提交过来的post请求放入request.body中
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: false}));
 // 设置 cookie
 app.use(cookieParser("kiss618"));
 // 定义静态文件目录

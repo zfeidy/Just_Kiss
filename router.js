@@ -4,8 +4,11 @@ var kissme = require('./controller/kissme');
 var employee = require('./controller/employee');
 var auth = require('./middleware/auth');
 var visit = require('./middleware/visits');
+var logger = require('./common/logger');
 
 module.exports = function (app) {
+    
+    logger.debug("路由加载开始......");
 
     // 基本操作
 //    app.get('/', user.index);
@@ -30,4 +33,6 @@ module.exports = function (app) {
     app.get('/employee/random', visit.count, employee.random);
     app.post('/employee/random', visit.count, employee.randomWithLine);
     app.get('/employee/count', employee.count);
+    
+    logger.debug("路由加载完毕......");
 };
