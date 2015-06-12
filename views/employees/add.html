@@ -22,8 +22,8 @@
                     <p/>
                     <div class="input-group">
                         <label class="input-group-addon">图片</label>
-                        <input type="text" class="form-control" name="happyimg" placeholder="开心图片">
                         <input type="text" class="form-control" name="sadimg" placeholder="沮丧图片">
+                        <input type="text" class="form-control" name="happyimg" placeholder="开心图片">
                     </div>
                     <p/>
                     <div class="input-group">
@@ -80,6 +80,13 @@
                         $("#employeeMsgModal").modal('show');
                     }
                 });
+            });
+
+            $("input[name='id']").bind("keyup", function () {
+                var baseurl = "http://storage.jd.com/kiss.jd.com/";
+                $("input[name='name']").val("BABY-" + $(this).val());
+                $("input[name='sadimg']").val(baseurl + $(this).val() + "-01.png");
+                $("input[name='happyimg']").val(baseurl + $(this).val() + "-02.png");
             });
         });
     </script>
