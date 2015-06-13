@@ -3,33 +3,27 @@
 /**
  * Module dependencies.
  */
+// 初始化redis集群
+require('../middleware/redis').initRedisCluster();
 
 var app = require('../app');
 var debug = require('debug')('comeonbaby:server');
 var http = require('http');
 var os = require('os');
-
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3000');
+var setting = require('../config/setting');
+// 初始化端口号
+var port = normalizePort(setting.port || process.env.PORT || '3000');
 
 // 获取CPU 的数量
-var numCPUs = os.cpus().length;
-var workers = {};
+//var numCPUs = os.cpus().length;
+//var workers = {};
 
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
-
+// 创建服务器
 var server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+// 监听
 try {
     server.listen(port);
     server.on('error', onError);
@@ -38,30 +32,20 @@ try {
     console.log(e);
 }
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
+// 格式化端口数字
 function normalizePort(val) {
     var port = parseInt(val, 10);
 
     if (isNaN(port)) {
-        // named pipe
         return val;
     }
-
     if (port >= 0) {
-        // port number
         return port;
     }
-
     return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
-
+// 异常
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
@@ -86,10 +70,7 @@ function onError(error) {
     }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
+// 监听
 function onListening() {
     var addr = server.address();
     var bind = typeof addr === 'string'
