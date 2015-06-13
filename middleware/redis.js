@@ -4,7 +4,7 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 exports.initRedisCluster = function () {
-    logger.debug("获取redis集群AP......");
+    logger.debug("获取redis集群AP开始");
     // 初始化redis集群
     initRedisConfig();
 };
@@ -50,7 +50,9 @@ var initRedisConfig = function () {
                     fs.writeFile('../config/redis.js', newConfig, function (err) {
                         if (err) {
                             console.log(err);
+                            logger.error("初始化redis集群AP配置异常", err);
                         }
+                        logger.debug("获取redis集群AP完成......");
                     });
                 }
             });
