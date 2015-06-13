@@ -1,3 +1,4 @@
 #!/bin/bash
-pm2=/opt/come_on_baby/bin/pm2
-sh $pm2 start start -i 8
+pm2dir=/export/App/kiss.wqs.jd.local/node_modules/pm2/bin
+nodedir=/export/servers/node-v0.12.4-linux-x64/bin
+$nodedir/node $pm2dir/pm2 start start -i 0
