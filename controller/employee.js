@@ -18,7 +18,6 @@ exports.list = function (req, res) {
 };
 
 exports.add = function (req, res) {
-    console.log("111111111111");
     res.render("employees/add", {
         title: "员工"
     });
@@ -92,8 +91,6 @@ exports.random = function (req, res) {
  */
 exports.randomWithLine = function (req, res) {
     var sessionid = req.sessionID;
-    console.log(94);
-    console.log(sessionid);
     var line = req.body.line;
     if (globalemployee) {
         getRandomAllWithLine(sessionid, line, globalemployee, res);
@@ -131,7 +128,7 @@ exports.count = function (req, res) {
                 logger.error("异常: ", err);
                 return res.json({success: false, msg: err});
             }
-            return res.json({success: true, total: (data === null ? 0 : data), msg: jsonRes});
+            res.json({success: true, total: (data === null ? 0 : data), msg: jsonRes});
         });
     });
 };
@@ -265,16 +262,16 @@ var getRandomAll = function (sessionid, employees, res) {
                     num: data[i + 1]
                 });
             }
-            
-            for(var i in re){
-                for(var j in jsonRes){
-                    if(re[i].id == jsonRes[j].id){
+
+            for (var i in re) {
+                for (var j in jsonRes) {
+                    if (re[i].id == jsonRes[j].id) {
                         re[i].times = jsonRes[j].num;
                     }
                 }
             }
             res.json({success: true, msg: re});
-            
+
         });
     });
 };
@@ -287,13 +284,11 @@ var getRandomAll = function (sessionid, employees, res) {
  * @returns {undefined}
  */
 var getRandomAllWithLine = function (sessionid, line, employees, res) {
-    
     Employee4Redis.randomAllWithLine(sessionid, line, employees, function (err, employeeIds) {
         if (err) {
             logger.error("异常: ", err);
             return res.json({success: false, msg: err});
         }
-        var re = Employee4Redis.fillWithLine(employees, line, employeeIds);
         Employee4Redis.count(function (err, data) {
             if (err) {
                 logger.error("异常: ", err);
@@ -307,15 +302,15 @@ var getRandomAllWithLine = function (sessionid, line, employees, res) {
                 });
             }
             
-            for(var i in re){
-                for(var j in jsonRes){
-                    if(re[i].id == jsonRes[j].id){
+            var re = Employee4Redis.fillWithLine(employees, line, employeeIds);
+            for (var i in re) {
+                for (var j in jsonRes) {
+                    if (re[i].id == jsonRes[j].id) {
                         re[i].times = jsonRes[j].num;
                     }
                 }
             }
             res.json({success: true, msg: re});
-            
         });
     });
 };
