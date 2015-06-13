@@ -19,7 +19,16 @@ var config = {
     cache: {
         path: path.join(__dirname, '../public/cache/'),
         url: 'public/cache/'
-    }
+    },
+    redisAp: {
+        "hostname": "aps.jimdb.jd.local",
+        "host": "aps.jimdb.jd.local",
+        "path": "/get",
+        "method": "get",
+        "port": 80
+    },
+    use_cluster: true,
+    reloadAp: false
 };
 
 module.exports = config;
