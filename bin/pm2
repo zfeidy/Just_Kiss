@@ -1,0 +1,13 @@
+#!/bin/sh
+basedir=`dirname "$0"`
+nodedir=/opt/node-v0.12.4-linux-x64/bin/
+pm2dir=/opt/come_on_baby/node_modules/pm2/bin/pm2
+
+if [ -x "$basedir/node" ]; then
+  "$nodedir/node"  "$pm2dir" "$@"
+  ret=$?
+else 
+  $nodedir/node  "$pm2dir" "$@"
+  ret=$?
+fi
+exit $ret
