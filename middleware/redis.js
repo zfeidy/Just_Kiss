@@ -52,7 +52,7 @@ var initRedisConfig = function () {
                             console.log(err);
                             logger.error("初始化redis集群AP配置异常", err);
                         }
-                        logger.debug("获取redis集群AP完成......");
+                        logger.debug("获取redis集群AP完成.");
                     });
                 }
             });
@@ -62,6 +62,6 @@ var initRedisConfig = function () {
         });
         getRedisReq.end();
     } else {
-        logger.info("loading...");
+        logger.info("加载redis集群AP完成.");
     }
 };
