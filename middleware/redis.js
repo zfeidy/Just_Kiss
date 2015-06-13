@@ -3,11 +3,10 @@ var logger = require('../common/logger');
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
-
 exports.initRedisCluster = function () {
     logger.debug("init redis cluster start......");
     // 初始化redis集群
-    initRedis();
+    initRedisConfig();
     logger.debug("init redis cluster end！");
 };
 
@@ -16,7 +15,7 @@ var sleep = function (sleepTime) {
     }
 };
 
-var initRedis = function () {
+var initRedisConfig = function () {
     if (config.use_cluster && !config.cluster) {
         // 初始化redis
         var options = {
