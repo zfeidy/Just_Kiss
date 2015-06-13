@@ -1,7 +1,5 @@
 // 记载配置项
 var setting = require('./config/setting');
-// 加载redis的配置
-var redisConfig = require('./config/redis');
 // 加载express
 var express = require('express');
 var path = require('path');
@@ -10,8 +8,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// 初始化redis集群
-require('./middleware/redis').initRedisCluster();
 // session模块
 var session = require('express-session');
 // redis session
@@ -49,11 +45,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 定义日志和输出级别
 app.use(logger('dev'));
 
+// 加载redis的配置
+var redisConfig = require('./config/redis');
 var rs = new RedisStore({
     port: redisConfig.redis_port,
     host: redisConfig.redis_host,
     pass: redisConfig.redis_auth,
-    no_ready_check: true
+    no_ready_check: true,
+    prefix: 'kiss:'
 });
 // 设置 Session
 app.use(session({
