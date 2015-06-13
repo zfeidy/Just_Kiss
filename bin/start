@@ -12,7 +12,7 @@ var http = require('http');
 var os = require('os');
 var setting = require('../config/setting');
 // 初始化端口号
-var port = normalizePort(setting.port || process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || setting.port || '3000');
 
 // 获取CPU 的数量
 //var numCPUs = os.cpus().length;
