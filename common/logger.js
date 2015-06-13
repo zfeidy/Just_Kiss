@@ -35,9 +35,10 @@ var writeLog = function (level, args) {
     if (consolePrint) {
         console.log(line);
     }
-
     if (filePrint) {
-        fs.appendFile(config.log_path + env + '.log', line + "\n");
+        fs.appendFile(config.log_path + env + '.log', line + "\n", function (err) {
+            console.log(err);
+        });
     }
 };
 
