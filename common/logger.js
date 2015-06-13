@@ -36,7 +36,7 @@ var writeLog = function (level, args) {
         console.log(line);
     }
     if (filePrint) {
-        fs.appendFile(config.log_path, line + "\n", function (err) {
+        fs.appendFile(config.log_path + "/kiss.log", line + "\n", function (err) {
             console.log(err);
         });
     }
