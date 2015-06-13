@@ -31,9 +31,9 @@ var writeLog = function (level, args) {
     var logStr = infos.join(" ");
     var levelStr = level == 'error' ? "错误" : (level == 'warn' ? "警告" : (level == 'debug' ? "调试" : "一般"));
     var line = packup(tools.formatDate(new Date())) + packup(levelStr) + packup(logStr);
-    
-    if (!filePrint && !consolePrint) {
-        return;
+
+    if (consolePrint) {
+        console.log(line);
     }
 
     if (filePrint) {

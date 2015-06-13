@@ -4,7 +4,6 @@ var path = require('path');
 var redis = require('../common/redis');
 var setting = require('../config/setting');
 var logger = require('./logger');
-//var employee_json = require('../config/kiss_jd_employee');
 var cachepath = setting.cache.path;
 
 // 从redis获取数据
@@ -63,11 +62,12 @@ exports.setToLocal = setToLocal;
 var getFromLocal = function (key, callback) {
     logger.log("加载数据", path.join(cachepath + '/' + key));
     fs.readFile(path.join(cachepath + '/' + key), 'utf-8', function (err, filedata) {
-        if (err)
+        if (err) {
             logger.error("读取文件异常", err);
             getFromRedis(key, function (redisdata) {
-                callback(redisdata);
+                return callback(redisdata);
             });
+        }
         callback(filedata);
     });
 };
