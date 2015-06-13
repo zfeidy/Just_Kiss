@@ -91,6 +91,7 @@ exports.random = function (req, res) {
  */
 exports.randomWithLine = function (req, res) {
     var sessionid = req.sessionID;
+    logger.debug("当前session", sessionid);
     var line = req.body.line;
     if (globalemployee) {
         getRandomAllWithLine(sessionid, line, globalemployee, res);
@@ -301,7 +302,7 @@ var getRandomAllWithLine = function (sessionid, line, employees, res) {
                     num: data[i + 1]
                 });
             }
-            
+
             var re = Employee4Redis.fillWithLine(employees, line, employeeIds);
             for (var i in re) {
                 for (var j in jsonRes) {
