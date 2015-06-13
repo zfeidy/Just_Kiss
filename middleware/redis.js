@@ -1,3 +1,4 @@
+var setting = require("../config/setting");
 var config = require("../config/redis");
 var logger = require('../common/logger');
 var http = require('http');
@@ -15,20 +16,20 @@ var sleep = function (sleepTime) {
 };
 
 var initRedisConfig = function () {
-    if (config.use_cluster && !config.cluster) {
+    if (setting.use_cluster && (setting.reloadAp || !config.cluster)) {
         // 初始化redis
         var options = {
-            hostname: config.opts.hostname,
-            port: config.opts.port,
-            method: config.opts.method,
-            path: config.opts.path
+            hostname: setting.redisAp.hostname,
+            port: setting.redisAp.port,
+            method: setting.redisAp.method,
+            path: setting.redisAp.path
         };
         console.log(options);
         var getRedisReq = http.request(options, function (res) {
-            logger.debug("getRedisReq");
+            logger.debug("请求ap数据开始......");
             res.setEncoding('utf8');
             res.on('data', function (chunk) {
-                console.log(chunk);
+                logger.debug("获取的AP数据", chunk);
                 var clusterStr = chunk.split("\n");
                 var opts = [];
                 for (var i in clusterStr) {
@@ -53,6 +54,7 @@ var initRedisConfig = function () {
                             logger.error("初始化redis集群AP配置异常", err);
                         }
                         logger.debug("获取redis集群AP完成.");
+                        logger.debug("由于是第一次加载redis配置，需要重新启动项目使redis配置生效.");
                     });
                 }
             });
