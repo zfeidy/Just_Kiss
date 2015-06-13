@@ -4,10 +4,9 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 exports.initRedisCluster = function () {
-    logger.debug("init redis cluster start......");
+    logger.debug("获取redis集群AP......");
     // 初始化redis集群
     initRedisConfig();
-    logger.debug("init redis cluster end！");
 };
 
 var sleep = function (sleepTime) {
