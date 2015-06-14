@@ -2,22 +2,22 @@ var path = require('path');
 
 var config = {
     // debug 为 true 时，用于本地调试
-    debug: false,
+    debug: true,
     groupsize: 1000,
     number: 4, //一次出现图片的张数
     expires: 360, // cookie过期时间。默认配置【0永久，1（小时），6（小时），12（小时），24（小时），48（小时），72（小时），168（小时）,360(小时),720(小时)】
     use_mongo: false, // 是否使用mongodb做存储
-    log_path: '/log',
+    log_path: path.join(__dirname, '../log'),
     // 程序运行的端口
     port: 3000,
     admin: "cc95bfd3be35ec81e0b331a058118569",
     password: "08822cd8f3fd4cca5a20e5a08a8b65b3",
     upload: {
-        path: path.join(__dirname, '../public/upload/'),
+        path: path.join(__dirname, 'public/upload/'),
         url: 'public/upload/'
     },
     cache: {
-        path: path.join(__dirname, '../public/cache/'),
+        path: path.join(__dirname, 'public/cache/'),
         url: 'public/cache/'
     },
     redisAp: {
@@ -28,7 +28,7 @@ var config = {
         "port": 80
     },
     use_cluster: true,
-    reloadAp: false
+    reloadAp: true
 };
 
 module.exports = config;
