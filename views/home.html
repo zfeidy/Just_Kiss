@@ -9,7 +9,7 @@
         <meta content="black" name="apple-mobile-web-app-status-bar-style">
         <meta content="#ffffff" name="msapplication-TileColor" />
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
-        <title>这个618你被保养了！亲肿了算我的</title>
+        <title>这个618你被包养了！亲肿了算我的</title>
         <link rel="stylesheet" href="/skin/index.css"/>
     </head> 
     <body>  
@@ -195,20 +195,20 @@
                     number = 4;  // 一次显示的数组长度
             var useFrontRandom = false;// 是否使用前端随机
 
-//            (function () {
-//                var local = window.location.pathname;
-//                $.ajax({
-//                    url: "http://wq.jd.com/mlogin/wxv3/LoginCheckJsonp",
-//                    dataType: 'JSONP',
-//                    jsonpCallback: 'validateLoginCallback',
-//                    success: function (data) {
-//                        if (data.iRet == "9999") {
-//                            // "http://wq.jd.com/mlogin/h5v1/cpLogin_BJ?rurl="+encodeURIComponent(option.rurl)
-//                            window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl=" + encodeURIComponent(local) + "&appid=1";
-//                        }
-//                    }
-//                });
-//            })();
+            (function () {
+                var local = window.location.pathname;
+                $.ajax({
+                    url: "http://wq.jd.com/mlogin/wxv3/LoginCheckJsonp",
+                    dataType: 'JSONP',
+                    jsonpCallback: 'validateLoginCallback',
+                    success: function (data) {
+                        if (data.iRet == "9999") {
+                            // "http://wq.jd.com/mlogin/h5v1/cpLogin_BJ?rurl="+encodeURIComponent(option.rurl)
+                            window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl=" + encodeURIComponent(local) + "&appid=1";
+                        }
+                    }
+                });
+            })();
 
             (function ($) {
                 /**
@@ -456,15 +456,15 @@
                         jsonpCallback: 'ActiveLotteryCallBack',
                         success: function (data) {
                             if (data) {
-//                                if (data.ret == 2) {
-//                                    var local = window.location.pathname;
-//                                    // "http://wq.jd.com/mlogin/h5v1/cpLogin_BJ?rurl="+encodeURIComponent(local)
-//                                    window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl=" + encodeURIComponent(local) + "&appid=1";
-//                                } else if (data.ret == 0 && data.bingo.ret == 0) {
-//                                    $(".happy-point .hp-prize").show().siblings("div").hide();
-//                                } else {
-//                                    $(".happy-point .hp-nochange").show().siblings("div").hide();
-//                                }
+                                if (data.ret == 2) {
+                                    var local = window.location.pathname;
+                                    // "http://wq.jd.com/mlogin/h5v1/cpLogin_BJ?rurl="+encodeURIComponent(local)
+                                    window.location.href = "http://wq.jd.com/mlogin/wxv3/login_BJ?rurl=" + encodeURIComponent(local) + "&appid=1";
+                                } else if (data.ret == 0 && data.bingo.ret == 0) {
+                                    $(".happy-point .hp-prize").show().siblings("div").hide();
+                                } else {
+                                    $(".happy-point .hp-nochange").show().siblings("div").hide();
+                                }
                             }
                         }
                     });
