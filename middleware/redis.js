@@ -24,7 +24,7 @@ var initRedisConfig = function () {
             method: setting.redisAp.method,
             path: setting.redisAp.path
         };
-        logger.info("AP信息：", options);
+        logger.info("读取AP信息", options);
         var getRedisReq = http.request(options, function (res) {
             logger.debug("请求ap数据开始......");
             res.setEncoding('utf8');
@@ -52,17 +52,17 @@ var initRedisConfig = function () {
                         if (err) {
                             logger.error("初始化redis集群AP配置异常", err);
                         }
-                        logger.debug("获取redis集群AP完成.");
-                        logger.debug("由于是第一次加载redis配置，需要重新启动项目使redis配置生效.");
+                        logger.debug("获取redis集群AP完成");
+                        logger.debug("由于是第一次加载redis配置，需要重新启动项目使redis配置生效");
                     });
                 }
             });
         }).on('error', function (e) {
-            logger.error("获取失败: " + e.message);
+            logger.error("获取AP信息失败", e);
             logger.debug(e);
         });
         getRedisReq.end();
     } else {
-        logger.info("加载redis集群AP完成.");
+        logger.info("加载redis集群AP完成");
     }
 };
