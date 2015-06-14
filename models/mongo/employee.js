@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var logger = require('../../common/logger');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
 var Mixed = Schema.Types.Mixed;
@@ -27,9 +28,9 @@ module.exports = Employee;
 Employee.getEmployeeById = function (id, callback) {
     Employee.findOne({emid: id}, function (err, message) {
         if (err) {
-            callback(err);
-            console.log(err);
+            return callback(err);
+            logger.error("根据用户ID查询用户异常：", err);
         }
-        return callback(null, message);
+        callback(null, message);
     });
 };
