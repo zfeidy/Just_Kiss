@@ -50,7 +50,6 @@ var initRedisConfig = function () {
                     newConfig += "module.exports = config;";
                     fs.writeFile('../config/redis.js', newConfig, function (err) {
                         if (err) {
-                            console.log(err);
                             logger.error("初始化redis集群AP配置异常", err);
                         }
                         logger.debug("获取redis集群AP完成.");
