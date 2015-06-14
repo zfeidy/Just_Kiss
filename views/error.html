@@ -1,3 +1,19 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>服务器又调皮了！</title>
+        <!--<meta http-equiv="refresh" content="3;url=http://m.jd.com/">-->
+    </head>
+    <body>
+        <h1><%= message %></h1>
+        <h2><%= error.status %></h2>
+        <pre><%= error.stack %></pre>
+        <script type="text/javascript">
+            setTimeout(function () {
+                window.location = "http://m.jd.com/";
+            }, 3000);
+        </script>
+    </body>
+</html>
+
