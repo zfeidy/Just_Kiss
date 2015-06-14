@@ -24,7 +24,7 @@ var initRedisConfig = function () {
             method: setting.redisAp.method,
             path: setting.redisAp.path
         };
-        console.log(options);
+        logger.info("AP信息：", options);
         var getRedisReq = http.request(options, function (res) {
             logger.debug("请求ap数据开始......");
             res.setEncoding('utf8');
