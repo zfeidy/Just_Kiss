@@ -16,6 +16,7 @@ var router = require('./router');
 var visits = require('./middleware/visits');
 var render = require('./middleware/render');
 var error = require('./middleware/error');
+var log = require("./common/logger");
 
 // 生成app对象
 var app = express();
@@ -73,6 +74,7 @@ app.use(error.errorPage);
 // 开发环境，500错误处理和错误堆栈跟踪
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
+        log.error("系统异常(开发环境)", err.message);
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -83,9 +85,11 @@ if (app.get('env') === 'development') {
 
 // 生产环境，500错误处理
 app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
+    log.error("系统异常", err.message);
+    res.statusCode = err.status || 500;
+    res.statusMessage = "服务器又调皮了！";
     res.render('error', {
-        message: err.message,
+        message: "悟空，你又调皮了",
         error: {}
     });
 });
