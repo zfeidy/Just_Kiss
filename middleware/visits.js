@@ -28,3 +28,15 @@ exports.count = function (req, res, next) {
         next();
     });
 };
+
+/**
+ * 获取客户端ip地址
+ * @param {type} req
+ * @returns {reqheaders.x-forwarded-for}
+ */
+var getClientIp = function (req) {
+    return req.headers['x-forwarded-for']  // 反向代理
+            || req.connection.remoteAddress  // 远程客户端
+            || req.socket.remoteAddress   // 通过socket
+            || req.connection.socket.remoteAddress;
+};
