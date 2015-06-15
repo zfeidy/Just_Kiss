@@ -22,7 +22,7 @@
     <script type="text/javascript">
         $(function () {
             var init = function () {
-                $.get("/employee/count", function (data) {
+                $.post("/employee/count", function (data) {
                     render(data);
                 });
             };
