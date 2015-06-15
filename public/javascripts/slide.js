@@ -1,169 +1,169 @@
-;(function($){
-    var isclicked=false,
-        musicFlag = true;
+var musicFlag = true;
+(function ($) {
+    var isclicked = false;
 
-    $(".square").height(function(){
+    $(".square").height(function () {
         return $(this).width();
-    })
+    });
     //music
-    $("#music").click(function(event) {
+    $("#music").click(function (event) {
         var bgaudio = $("#bgaudio")[0];
         $(this).toggleClass("music-roll")
-            .siblings().toggleClass("heart-propagation");
-        if($(this).hasClass("music-roll")){
+                .siblings().toggleClass("heart-propagation");
+        if ($(this).hasClass("music-roll")) {
             bgaudio.play();
             musicFlag = true;
-        }else{
+        } else {
             bgaudio.pause();
             musicFlag = false;
         }
     });
 
 
-    function sectionAnimate0(){
-        setInterval(function(){
+    function sectionAnimate0() {
+        setInterval(function () {
             var $fore1 = $(".fore1"),
-                index = $(".loading:visible",$fore1).length;
-            if(index === 8){
-                $(".loading",$fore1).hide();
-            }else{
-                $(".loading:eq("+index+")",$fore1).css("display","inline-block");
+                    index = $(".loading:visible", $fore1).length;
+            if (index === 8) {
+                $(".loading", $fore1).hide();
+            } else {
+                $(".loading:eq(" + index + ")", $fore1).css("display", "inline-block");
             }
-        },500);
+        }, 500);
 
         var $audio1 = $("#bgaudio");
-        $audio1.attr("src","/audio/bgmusic.mp3").on("canplaythrough",function(){
+        $audio1.attr("src", "/audio/bgmusic.mp3").on("canplaythrough", function () {
             $audio1[0].play();
-            swiper.activeIndex=1;
+            swiper.activeIndex = 1;
             swiper.slideTo(1, 500, false);
-            setTimeout(function(){
+            setTimeout(function () {
                 sectionAnimate1();
-            },500);
+            }, 500);
         })[0].load();
     }
-    function sectionAnimate1(){
-        $(".kiss-text").animate({opacity:1},2000)
-        var w=$(window).width();
-        var h=$(window).height();
-        var row=Math.ceil(h/80);
-        var col=Math.ceil(w/100);
-        var arrKiss=[];
-        var arrKiss2=[];
-        var len=0;
-        for(var i=0;i<row;i++){
-            for(var j=0;j<col;j++){
-                arrKiss.push({left:100*j-30,top:80*i-20})
+    function sectionAnimate1() {
+        $(".kiss-text").animate({opacity: 1}, 2000)
+        var w = $(window).width();
+        var h = $(window).height();
+        var row = Math.ceil(h / 80);
+        var col = Math.ceil(w / 100);
+        var arrKiss = [];
+        var arrKiss2 = [];
+        var len = 0;
+        for (var i = 0; i < row; i++) {
+            for (var j = 0; j < col; j++) {
+                arrKiss.push({left: 100 * j - 30, top: 80 * i - 20})
             }
         }
-        len=arrKiss.length;
-        for(var i=0;i<len;i++){
-            var n=parseInt(Math.random()*arrKiss.length);
+        len = arrKiss.length;
+        for (var i = 0; i < len; i++) {
+            var n = parseInt(Math.random() * arrKiss.length);
             arrKiss2.push(arrKiss[n]);
-            arrKiss.splice(n,1);
+            arrKiss.splice(n, 1);
         }
-        function randomKiss(left,top){
-            var n=parseInt(Math.random()*3)+2;
-            var deg=parseInt(Math.random()*120)-60;
-            var opa=(parseInt(Math.random()*5)+5)/10;
-            var $kiss=$('<div class="kiss kiss-'+n+'"></div>')
+        function randomKiss(left, top) {
+            var n = parseInt(Math.random() * 3) + 2;
+            var deg = parseInt(Math.random() * 120) - 60;
+            var opa = (parseInt(Math.random() * 5) + 5) / 10;
+            var $kiss = $('<div class="kiss kiss-' + n + '"></div>')
             $kiss.css({
-                "opacity":opa,
-                "left":left+"px",
-                "top":top+"px",
-                "transform": "rotate("+deg+"deg)",
-                "-ms-transform":"rotate("+deg+"deg)",
-                "-moz-transform": "rotate("+deg+"deg)",
-                "-webkit-transform": "rotate("+deg+"deg)",
-                "-o-transform": "rotate("+deg+"deg)"
+                "opacity": opa,
+                "left": left + "px",
+                "top": top + "px",
+                "transform": "rotate(" + deg + "deg)",
+                "-ms-transform": "rotate(" + deg + "deg)",
+                "-moz-transform": "rotate(" + deg + "deg)",
+                "-webkit-transform": "rotate(" + deg + "deg)",
+                "-o-transform": "rotate(" + deg + "deg)"
             });
             $(".fore2").append($kiss);
-            $kiss.animate({opacity:1});
+            $kiss.animate({opacity: 1});
         }
-        $(".fore2").click(function(){
-            if(isclicked==true){
+        $(".fore2").click(function () {
+            if (isclicked == true) {
                 return;
             }
             musicFlag && $("#kissesaudio")[0].play();
-            isclicked=true;
-            var kissNum=0;
-            var t1=50;
-            $(".fore2").css("background","#c91623");
+            isclicked = true;
+            var kissNum = 0;
+            var t1 = 50;
+            $(".fore2").css("background", "#c91623");
             $(".tap-tip").hide();
-            var timer=setInterval(function(){
+            var timer = setInterval(function () {
                 kissNum++;
-                if(kissNum==5){
-                    $(".kiss-text img").attr("src","skin/i/kiss-text-2.png");
+                if (kissNum == 5) {
+                    $(".kiss-text img").attr("src", "skin/i/kiss-text-2.png");
                 }
-                else if(kissNum==parseInt(arrKiss2.length*2/3)){
-                    $(".kiss-text").css("opacity",0).animate({opacity:1},1500);
-                    $(".kiss-text img").attr("src","skin/i/kiss-text-3.png");
+                else if (kissNum == parseInt(arrKiss2.length * 2 / 3)) {
+                    $(".kiss-text").css("opacity", 0).animate({opacity: 1}, 1500);
+                    $(".kiss-text img").attr("src", "skin/i/kiss-text-3.png");
                 }
-                t1=1/kissNum*50;
-                if(kissNum<arrKiss2.length)
+                t1 = 1 / kissNum * 50;
+                if (kissNum < arrKiss2.length)
                 {
-                    randomKiss(arrKiss2[kissNum].left,arrKiss2[kissNum].top);
+                    randomKiss(arrKiss2[kissNum].left, arrKiss2[kissNum].top);
                 }
-                else{
+                else {
                     clearInterval(timer);
-                    $(".kiss").css("background","none");
+                    $(".kiss").css("background", "none");
                     $(".kiss-text").addClass("flash");
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $(".kiss-text").css({
                             "transform": "scale3d(0.8,0.8,1) rotate(-10deg) translate(0,-30px)",
                             "-webkit-transform": "scale3d(0.8,0.8,1) rotate(-10deg) translate(0,-30px)",
                             "-webkit-transition": "all ease-out 0.2s",
                             "transition": "all ease-out 0.2s"
                         });
-                    },1000);
-                    setTimeout(function(){
-                        $(".it-text").css("visibility","visible").addClass("tada");
-                    },1800)
-                    setTimeout(function(){
+                    }, 1000);
+                    setTimeout(function () {
+                        $(".it-text").css("visibility", "visible").addClass("tada");
+                    }, 1800)
+                    setTimeout(function () {
                         //$(".it-text-shadow").animate({opacity:1},500);
-                        $(".kiss-blue").animate({opacity:1},1500);
-                    },3300)
+                        $(".kiss-blue").animate({opacity: 1}, 1500);
+                    }, 3300)
                 }
-            },t1)
+            }, t1)
         })
     }
-    function sectionAnimate4(){
+    function sectionAnimate4() {
         $(".run-man1").addClass("runningman");
-        setTimeout(function(){
+        setTimeout(function () {
             $("#run-man1").removeClass("runningman").addClass("run-man2 opacityIn");
             $("#arm").addClass("opacityIn");
-            setTimeout(function(){
+            setTimeout(function () {
                 $("#arm").removeClass("opacityIn").addClass("armmove");
                 //$("#run-encourage").addClass("opacityIn");
                 $("#run-type1").removeClass("hide").addClass("scaleZ");
-                setTimeout(function(){
+                setTimeout(function () {
                     $("#run-type2").removeClass("hide").addClass("scaleZ");
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $("#run-type3").removeClass("hide").addClass("scaleZ");
-                        setTimeout(function(){
+                        setTimeout(function () {
                             $("#run-type4").removeClass("hide").addClass("scaleZ");
-                        },500);
-                    },500);
-                },500);
-            },1000);
-        },1000);
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }, 1000);
+        }, 1000);
 
-        $(".run-type").bind('touchstart', function(event) {
-            $(this).addClass($(this).attr("id")+"-active");
-        }).bind('touchend', function(event) {
-            $(this).removeClass($(this).attr("id")+"-active");
+        $(".run-type").bind('touchstart', function (event) {
+            $(this).addClass($(this).attr("id") + "-active");
+        }).bind('touchend', function (event) {
+            $(this).removeClass($(this).attr("id") + "-active");
         });
-        $(".run-type").on('tap', function(event) {
-            var idx=$(".run-type").index($(this));
+        $(".run-type").on('tap', function (event) {
+            var idx = $(".run-type").index($(this));
             $(".swiper-slide .box").attr("idx", idx);
-            $(".line-w").css("display","none").eq(idx).css("display","block");
-            swiper.activeIndex=3;
+            $(".line-w").css("display", "none").eq(idx).css("display", "block");
+            swiper.activeIndex = 3;
             swiper.slideTo(3, 500, false);
-            setTimeout(function(){
+            setTimeout(function () {
                 sectionAnimate6();
-            },500);
+            }, 500);
         });
     }
-    function sectionAnimate6(){
+    function sectionAnimate6() {
         $(".change-w").addClass("flipInY")
         /*箭头闪烁是禁止点击遮罩*/
         $('.sad-w').css({
@@ -174,20 +174,20 @@
             height: $(window).height()
         });
         /*吻ta箭头动画*/
-        setTimeout(function(){
+        setTimeout(function () {
             $('.sad-point').eq(0).addClass('sad-flash');
-            setTimeout(function(){
+            setTimeout(function () {
                 $('.sad-point').eq(1).addClass('sad-flash');
-                setTimeout(function(){
+                setTimeout(function () {
                     $('.sad-point').eq(2).addClass('sad-flash');
                     $('.sad-w').hide();
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $('.sad-point').eq(3).addClass('sad-flash');
                         $('.sad-w').hide();
-                    },1000);
-                },1000);
-            },1000);
-        },1000);
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 1000);
 
         /*点击人物*/
 //        $('.sad ul li p').bind('click', function(event) {
@@ -218,7 +218,7 @@
 //
 //        });
         /*弹层关闭按钮*/
-        $('.sp-del,.hg-del').bind('click', function(event) {
+        $('.sp-del,.hg-del').bind('click', function (event) {
             $('.sad-popup').hide();
         });
         /*换一批吻*/
@@ -248,17 +248,17 @@
 //        }
     }
 
-    $(".common-wrapper").css("height",$(window).height());
+    $(".common-wrapper").css("height", $(window).height());
     sectionAnimate0();
     var swiper = new Swiper('.swiper-container', {
         centeredSlides: true,
         autoplay: false,
         autoplayDisableOnInteraction: false,
-        loop:false,
-        threshold :20,
-        direction:"vertical",
-        onSlideChangeEnd: function(swiper){
-            switch(swiper.activeIndex){
+        loop: false,
+        threshold: 20,
+        direction: "vertical",
+        onSlideChangeEnd: function (swiper) {
+            switch (swiper.activeIndex) {
                 case 1:
                     sectionAnimate1();
                     swiper.unlockSwipeToNext();
@@ -272,12 +272,12 @@
                     swiper.lockSwipeToNext();
                     break;
             }
-            
+
         }
     });
 
 
-        // 微信分享事件绑定
+    // 微信分享事件绑定
     document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
         // 发送给好友
         WeixinJSBridge.on('menu:share:appmessage', function (argv) {
@@ -308,4 +308,4 @@
     }, false)
 })(Zepto);
 
-        
+
