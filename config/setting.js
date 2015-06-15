@@ -13,11 +13,11 @@ var config = {
     admin: "cc95bfd3be35ec81e0b331a058118569",
     password: "08822cd8f3fd4cca5a20e5a08a8b65b3",
     upload: {
-        path: path.join(__dirname, 'public/upload/'),
+        path: path.join(__dirname, '../public/upload/'),
         url: 'public/upload/'
     },
     cache: {
-        path: path.join(__dirname, 'public/cache/'),
+        path: path.join(__dirname, '../public/cache/'),
         url: 'public/cache/'
     },
     redisAp: {
