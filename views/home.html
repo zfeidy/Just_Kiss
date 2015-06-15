@@ -339,7 +339,8 @@
                     target.children('.sad-kiss').show();
                     /*$('.sad-swing-hide').removeClass();*/
                     target.find('.sad-swing-hide').removeClass();
-//                    musicFlag && $("#kissaudio")[0].play();
+                    console.log(musiciFlag);
+                    musicFlag && $("#kissaudio")[0].play();
                     $("#kissaudio")[0].play();
                     setTimeout(function () {
                         $('.sad-popup').show();
