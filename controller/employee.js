@@ -57,7 +57,7 @@ exports.kiss = function (req, res) {
     var withline = req.body.withline;
     em.kiss(sessionid, withline, function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return res.json({success: false, msg: err});
         }
         res.json({success: true, msg: data});
@@ -104,16 +104,22 @@ exports.randomWithLine = function (req, res) {
     }
 };
 
+exports.count = function (req, res) {
+    res.render("employees/count", {
+        title: "点赞统计"
+    });
+};
+
 /**
  * 员工点赞统计
  * @param {type} req
  * @param {type} res
  * @returns {undefined}
  */
-exports.count = function (req, res) {
+exports.doCount = function (req, res) {
     Employee4Redis.count(function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return res.json({success: false, msg: err});
         }
         var jsonRes = [];
@@ -126,7 +132,7 @@ exports.count = function (req, res) {
 
         Employee4Redis.countTotal(function (err, data) {
             if (err) {
-                logger.error("异常: ", err);
+                logger.error("异常", err);
                 return res.json({success: false, msg: err});
             }
             res.json({success: true, total: (data === null ? 0 : data), msg: jsonRes});
@@ -150,7 +156,7 @@ var doAddWithRedis = function (req, res) {
     var ep = new EventProxy();
 
     ep.fail(function (err) {
-        logger.error("异常: ", err);
+        logger.error("异常", err);
         return res.json({success: false, msg: err});
     });
 
@@ -181,7 +187,7 @@ var doAddWithRedis = function (req, res) {
     ep.once("save", function (employees) {
         Employee4Redis.add(employee, employees, function (err) {
             if (err) {
-                logger.error("异常: ", err);
+                logger.error("异常", err);
                 res.json({success: false, msg: err});
             } else {
                 res.json({success: true, msg: "添加信息成功！"});
@@ -192,7 +198,7 @@ var doAddWithRedis = function (req, res) {
     ep.once("update", function (employees) {
         Employee4Redis.update(employee, employees, function (err, data) {
             if (err) {
-                logger.error("异常: ", err);
+                logger.error("异常", err);
                 return res.json({success: false, msg: err});
             } else {
                 res.json({success: true, msg: "修改信息成功！"});
@@ -229,7 +235,7 @@ var doAddWithMongo = function (req, res) {
     ep.once("save", function () {
         employee.save(function (err, data) {
             if (err) {
-                logger.error("异常: ", err);
+                logger.error("异常", err);
                 return res.json({success: false, msg: err});
             }
             res.json({success: true, msg: data});
@@ -247,13 +253,13 @@ var doAddWithMongo = function (req, res) {
 var getRandomAll = function (sessionid, employees, res) {
     Employee4Redis.randomAll(sessionid, employees, function (err, employeeIds) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return res.json({success: false, msg: err});
         }
         var re = Employee4Redis.fill(employees, employeeIds);
         Employee4Redis.count(function (err, data) {
             if (err) {
-                logger.error("异常: ", err);
+                logger.error("异常", err);
                 return res.json({success: false, msg: err});
             }
             var jsonRes = [];
@@ -287,12 +293,12 @@ var getRandomAll = function (sessionid, employees, res) {
 var getRandomAllWithLine = function (sessionid, line, employees, res) {
     Employee4Redis.randomAllWithLine(sessionid, line, employees, function (err, employeeIds) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return res.json({success: false, msg: err});
         }
         Employee4Redis.count(function (err, data) {
             if (err) {
-                logger.error("异常: ", err);
+                logger.error("异常", err);
                 return res.json({success: false, msg: err});
             }
             var jsonRes = [];
