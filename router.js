@@ -7,7 +7,7 @@ var visit = require('./middleware/visits');
 var logger = require('./common/logger');
 
 module.exports = function (app) {
-    
+
     logger.debug("路由加载开始......");
 
     // 基本操作
@@ -33,6 +33,7 @@ module.exports = function (app) {
     app.get('/employee/random', visit.count, employee.random);
     app.post('/employee/random', visit.count, employee.randomWithLine);
     app.get('/employee/count', employee.count);
-    
+    app.post('/employee/count', employee.doCount);
+
     logger.debug("路由加载完毕......");
 };
