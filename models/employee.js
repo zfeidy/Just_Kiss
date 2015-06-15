@@ -92,7 +92,7 @@ Employee.add = function (employee, employees, callback) {
     employees.push(employee);
     cache.setToLocal(kissme_employee, JSON.stringify(employees), function (err) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return callback(err);
         }
         callback(null);
@@ -117,7 +117,7 @@ Employee.update = function (employee, employees, callback) {
     }
     cache.setToLocal(kissme_employee, JSON.stringify(employees), function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return callback(err);
         }
         callback(null, data);
@@ -156,7 +156,7 @@ Employee.random = function (sessionid, employees, callback) {
     // 一次从redis里面随机取出number个元素
     redis.srandmember(redis_key, number, function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return callback(err);
         }
         // 如果结果集为空或者空数组
@@ -174,7 +174,7 @@ Employee.random = function (sessionid, employees, callback) {
 
             redis.sadd(redis_key, getUncheckId(_employees), function (err, data) {
                 if (err) {
-                    logger.error("异常: ", err);
+                    logger.error("异常", err);
                     return callback(err);
                 }
                 logger.info(data);
@@ -185,7 +185,7 @@ Employee.random = function (sessionid, employees, callback) {
         } else {
             redis.srem(redis_key, data, function (err, delnum) {
                 if (err) {
-                    logger.error("异常: ", err);
+                    logger.error("异常", err);
                     return callback(err);
                 }
             });
@@ -209,7 +209,7 @@ Employee.randomAll = function (sessionid, employees, callback) {
     // 一次从redis里面随机取出number个元素
     redis.srandmember(redis_key, number, function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return callback(err);
         }
         // 如果结果空数组
@@ -217,7 +217,7 @@ Employee.randomAll = function (sessionid, employees, callback) {
             var kissed_session = "kissed_" + sessionid;
             redis.get(kissed_session, function (err, kissed) {
                 if (err) {
-                    logger.error("异常: ", err);
+                    logger.error("异常", err);
                     return callback(err);
                 }
                 // 已经被赞过
@@ -228,7 +228,7 @@ Employee.randomAll = function (sessionid, employees, callback) {
                     // 把所有员工的ID加入到redis缓存
                     redis.sadd(redis_key, getAllId(employees), function (err, data) {
                         if (err) {
-                            logger.error("异常: ", err);
+                            logger.error("异常", err);
                             return callback(err);
                         }
                     });
@@ -300,7 +300,7 @@ Employee.randomAllWithLine = function (sessionid, line, employees, callback) {
     // 一次从redis里面随机取出number个元素
     redis.zrangebyscore(redis_key, startid, endid, function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return callback(err);
         }
         // 如果结果集为空或者空数组
@@ -308,7 +308,7 @@ Employee.randomAllWithLine = function (sessionid, line, employees, callback) {
             var kissed_session = "kissed_" + sessionid;
             redis.get(kissed_session, function (err, kissed) {
                 if (err) {
-                    logger.error("异常: ", err);
+                    logger.error("异常", err);
                     return callback(err);
                 }
                 // 已经被赞过
@@ -321,7 +321,7 @@ Employee.randomAllWithLine = function (sessionid, line, employees, callback) {
                     // 把所有员工的ID加入到redis缓存
                     redis.zadd(redis_key, newValue, function (err, data) {
                         if (err) {
-                            logger.error("异常: ", err);
+                            logger.error("异常", err);
                             return callback(err);
                         }
                     });
@@ -389,7 +389,7 @@ Employee.fillWithLine = function (employees, line, employeeIds) {
 Employee.count = function (callback) {
     redis.zrevrange(kissme_rank, 0, -1, 'withscores', function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return callback(err);
         }
         callback(null, data);
@@ -404,7 +404,7 @@ Employee.count = function (callback) {
 Employee.countTotal = function (callback) {
     redis.get(kissed_counter, function (err, data) {
         if (err) {
-            logger.error("异常: ", err);
+            logger.error("异常", err);
             return callback(err);
         }
         callback(null, data);
