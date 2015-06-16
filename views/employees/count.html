@@ -34,10 +34,12 @@
                     var uv = data.msg;
                     $.each(uv, function (i) {
                         var row = uv[i];
-                        html += "<tr>";
-                        html += "<td>" + row.id + "</td>";
-                        html += "<td>" + row.num + "</td>";
-                        html += "</tr>";
+                        if (row.id != null && row.id != "") {
+                            html += "<tr>";
+                            html += "<td>" + row.id + "</td>";
+                            html += "<td>" + row.num + "</td>";
+                            html += "</tr>";
+                        }
                     });
                 }
                 $("#count_table_body").html(html);
