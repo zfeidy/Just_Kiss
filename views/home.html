@@ -181,6 +181,11 @@
                         </div>
                     </div>
                 </div>
+                <div class="swiper-slide">
+                    <div class="section fore10">
+
+                    </div>
+                </div>
             </div>
         </div>
         <script type="text/javascript" src="/javascripts/zepto.min.js"></script> 
@@ -196,6 +201,7 @@
 
 
                 function sectionAnimate0() {
+
                     setInterval(function () {
                         var $fore1 = $(".fore1"),
                                 index = $(".loading:visible", $fore1).length;
@@ -217,6 +223,7 @@
                 }
                 function sectionAnimate1() {
                     swiper.lockSwipeToNext();
+                    swiper.lockSwipeToPrev();
                     $(".kiss-text").animate({opacity: 1}, 2000)
                     var w = $(window).width();
                     var h = $(window).height();
@@ -308,6 +315,7 @@
                     })
                 }
                 function sectionAnimate4() {
+                    swiper.unlockSwipeToPrev();
                     $(".run-man1").addClass("runningman");
                     setTimeout(function () {
                         $("#run-man1").removeClass("runningman").addClass("run-man2 opacityIn");
@@ -417,6 +425,7 @@
                     };
                 }
                 function sectionAnimate6() {
+                    swiper.lockSwipeToNext();
                     $(".change-w").addClass("flipInY")
                     /*箭头闪烁是禁止点击遮罩*/
                     $('.sad-w').css({
@@ -470,6 +479,9 @@
                             case 3:
                                 sectionAnimate6();
                                 swiper.lockSwipeToNext();
+                                break;
+                            case 4:
+                                //sectionAnimate6();
                                 break;
                         }
 
