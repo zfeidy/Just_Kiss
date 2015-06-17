@@ -181,27 +181,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="swiper-slide">
-                    <div class="section fore10">
-
-                    </div>
-                </div>
+				<div class="swiper-slide">
+					<div class="section fore10">
+						
+					</div>
+				</div>
             </div>
         </div>
         <script type="text/javascript" src="/javascripts/zepto.min.js"></script> 
-        <script type="text/javascript" src="/javascripts/swiper.min.js"></script> 
+        <script type="text/javascript" src="/javascripts/swiper.min.js"></script>
+        <script type="text/javascript" src="http://wq.360buyimg.com/js/halo/halo.15.01.js"></script> 
         <script type="text/javascript">
             (function ($) {
                 var isclicked = false,
                         animate2 = false;
 
+                var swiper;
+
                 $(".square").height(function () {
                     return $(this).width();
                 });
-
+                sectionAnimate0();
 
                 function sectionAnimate0() {
 
+                
+					
                     setInterval(function () {
                         var $fore1 = $(".fore1"),
                                 index = $(".loading:visible", $fore1).length;
@@ -212,18 +217,80 @@
                         }
                     }, 500);
 
-                    setTimeout(function () {
+
+                    /*setTimeout(function(){
                         $("#bgaudio")[0].play();
                         swiper.activeIndex = 1;
                         swiper.slideTo(1, 500, false);
                         setTimeout(function () {
                             sectionAnimate1();
-                        }, 500);
-                    }, 1000);
+                        }, 500); 
+                    },1000);*/
+
+                    halo.use('loader',function(m){
+                        m.loader([
+                            'skin/i/change.png','skin/i/change01.png','skin/i/change02.png',
+                            'skin/i/coupon.png','skin/i/happy-del.png','skin/i/happy-people01.png',
+                            'skin/i/it-text.png','skin/i/kiss.png','skin/i/kiss-1.png',
+                            'skin/i/kiss-2.png','skin/i/kiss-3.png','skin/i/kiss-4.png',
+                            'skin/i/kiss-blue.png','skin/i/kiss-text-1.png','skin/i/kiss-text-2.png',
+                            'skin/i/kiss-text-3.png','skin/i/line-pic.png','skin/i/login.png',
+                            'skin/i/login-loading.png','skin/i/logo.png','skin/i/music.png',
+                            'skin/i/music2.png','skin/i/music3.png','skin/i/popup-skin01.png',
+                            'skin/i/run-bg.png','skin/i/run-man.png','skin/i/run-man2.png',
+                            'skin/i/run-man3.png','skin/i/run-type1.png','skin/i/run-type1-active.png',
+                            'skin/i/run-type2.png','skin/i/run-type2-active.png','skin/i/run-type3.png',
+                            'skin/i/run-type3-active.png','skin/i/run-type4.png','skin/i/run-type4-active.png',
+                            'skin/i/sad00-cover.png','skin/i/sad01.png','skin/i/sad01-cover.png',
+                            'skin/i/sad02.png','skin/i/sad02-cover.png','skin/i/sad03.png',
+                            'skin/i/sad03-cover.png','skin/i/sad04.png','skin/i/sad04-cover.png',
+                            'skin/i/sad05-cover.png','skin/i/sad06-cover.png','skin/i/sad07-cover.png',
+                            'skin/i/sad08-cover.png','skin/i/sad09-cover.png','skin/i/sad-kiss.png',
+                            'skin/i/sad-point.png','skin/i/tap-everwhere.png','skin/i/up.png',
+                            'skin/i/we-dot.png'
+                            ])
+                            .complete(function(){
+                                //完成加载调用 
+                                swiper = new Swiper('.swiper-container', {
+                                    centeredSlides: true,
+                                    autoplay: false,
+                                    autoplayDisableOnInteraction: false,
+                                    loop: false,
+                                    threshold: 20,
+                                    direction: "vertical",
+                                    onSlideChangeEnd: function (swiper) {
+                                        switch (swiper.activeIndex) {
+                                            case 1:
+                                                sectionAnimate1();
+                                                swiper.unlockSwipeToNext();
+                                                break;
+                                            case 2:
+                                                sectionAnimate4();
+                                                swiper.unlockSwipeToNext();
+                                                break;
+                                            case 3:
+                                                sectionAnimate6();
+                                                swiper.lockSwipeToNext();
+                                                break;
+                                            case 4:
+                                                //sectionAnimate6();
+                                            break;
+                                        }
+
+                                    }
+                                });
+                                $("#bgaudio")[0].play();
+                                swiper.activeIndex = 1;
+                                swiper.slideTo(1, 500, false);
+                                setTimeout(function () {
+                                    sectionAnimate1();
+                                }, 500);      
+                            });
+                    });
                 }
                 function sectionAnimate1() {
                     swiper.lockSwipeToNext();
-                    swiper.lockSwipeToPrev();
+					swiper.lockSwipeToPrev();
                     $(".kiss-text").animate({opacity: 1}, 2000)
                     var w = $(window).width();
                     var h = $(window).height();
@@ -315,7 +382,7 @@
                     })
                 }
                 function sectionAnimate4() {
-                    swiper.unlockSwipeToPrev();
+					swiper.unlockSwipeToPrev();
                     $(".run-man1").addClass("runningman");
                     setTimeout(function () {
                         $("#run-man1").removeClass("runningman").addClass("run-man2 opacityIn");
@@ -425,7 +492,7 @@
                     };
                 }
                 function sectionAnimate6() {
-                    swiper.lockSwipeToNext();
+					swiper.lockSwipeToNext();
                     $(".change-w").addClass("flipInY")
                     /*箭头闪烁是禁止点击遮罩*/
                     $('.sad-w').css({
@@ -458,35 +525,7 @@
                 }
 
                 $(".common-wrapper").css("height", $(window).height());
-                sectionAnimate0();
-                var swiper = new Swiper('.swiper-container', {
-                    centeredSlides: true,
-                    autoplay: false,
-                    autoplayDisableOnInteraction: false,
-                    loop: false,
-                    threshold: 20,
-                    direction: "vertical",
-                    onSlideChangeEnd: function (swiper) {
-                        switch (swiper.activeIndex) {
-                            case 1:
-                                sectionAnimate1();
-                                swiper.unlockSwipeToNext();
-                                break;
-                            case 2:
-                                sectionAnimate4();
-                                swiper.unlockSwipeToNext();
-                                break;
-                            case 3:
-                                sectionAnimate6();
-                                swiper.lockSwipeToNext();
-                                break;
-                            case 4:
-                                //sectionAnimate6();
-                                break;
-                        }
-
-                    }
-                });
+                
 
                 // 微信分享事件绑定
                 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
