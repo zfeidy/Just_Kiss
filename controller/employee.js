@@ -92,7 +92,7 @@ exports.random = function (req, res) {
 exports.randomWithLine = function (req, res) {
     var sessionid = req.sessionID;
     logger.debug("当前session", sessionid);
-    var line = req.body.line;
+    var line = req.body.line ? req.body.line : 1;
     if (globalemployee) {
         getRandomAllWithLine(sessionid, line, globalemployee, res);
     } else {
