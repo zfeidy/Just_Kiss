@@ -61,7 +61,7 @@ Employee.prototype.kiss = function (sessionid, withline, callback) {
     });
 
     ep.once("console", function (data) {
-//        logger.info(data);
+//        logger.debug(data);
     });
 };
 
@@ -177,7 +177,7 @@ Employee.random = function (sessionid, employees, callback) {
                     logger.error("异常", err);
                     return callback(err);
                 }
-                logger.info(data);
+                logger.debug(data);
             });
             if (callback) {
                 callback(null, result);
@@ -233,12 +233,12 @@ Employee.randomAll = function (sessionid, employees, callback) {
                         }
                     });
                     callback(null, result);
-                    logger.info("randomAll result = " + result);
+                    logger.debug("randomAll result = " + result);
                 }
             });
         } else {
             callback(null, data);
-            logger.info("randomAll data = " + data);
+            logger.debug("randomAll data = " + data);
         }
     });
 };
