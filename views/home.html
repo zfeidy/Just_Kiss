@@ -21,8 +21,8 @@
                 <div class="heart3 heart-propagation"></div>
                 <div class="heart4 heart-propagation"></div>
             </div>
-
-
+ 
+ 
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <div class="section fore1">
@@ -53,7 +53,7 @@
                         <div class="up"></div>
                     </div>
                 </div>
-
+ 
                 <div class="swiper-slide">
                     <div class="section fore5">
                         <div class="run-man1" id="run-man1">
@@ -66,7 +66,7 @@
                             <div class="run-type3 hide fl run-type" id="run-type3"></div>
                             <div class="run-type4 hide fr run-type" id="run-type4"></div>
                         </div>
-
+ 
                         <div class="logo"></div>
                     </div>
                 </div>
@@ -129,11 +129,11 @@
                                     <img src="/skin/i/change01.png">
                                 </div>
                                 <a href="javascript:;" class="change">
-
+ 
                                     <img src="/skin/i/change02.png">
                                 </a>
                             </div>
-
+ 
                         </div>
                         <!-- <div class="sad-w"></div> -->
                         <div class="sad-popup">
@@ -171,7 +171,7 @@
                                 </div>
                             </div>
                             <div class="happy-goto618">
-                                <a href="http://click.union.jd.com/JdClick/?unionId=303589713&to=http://wq.jd.com/mcoss/mportal/show?tpl=11&tabid=11" class="fl">
+                                <a href="http://click.union.jd.com/JdClick/?unionId=303589713&to=http://wqs.jd.com/promote/2015/618zhu/index.html" class="fl">
                                     进入618
                                 </a>
                                 <a href="javascript:;" class="fr hg-del">
@@ -195,16 +195,16 @@
             (function ($) {
                 var isclicked = false,
                         animate2 = false;
-
+ 
                 var swiper;
-
+ 
                 $(".square").height(function () {
                     return $(this).width();
                 });
                 sectionAnimate0();
-
+ 
                 function sectionAnimate0() {
-
+ 
                 
 					
                     setInterval(function () {
@@ -216,8 +216,8 @@
                             $(".loading:eq(" + index + ")", $fore1).css("display", "inline-block");
                         }
                     }, 500);
-
-
+ 
+ 
                     /*setTimeout(function(){
                         $("#bgaudio")[0].play();
                         swiper.activeIndex = 1;
@@ -226,7 +226,7 @@
                             sectionAnimate1();
                         }, 500); 
                     },1000);*/
-
+ 
                     halo.use('loader',function(m){
                         m.loader([
                             'skin/i/change.png','skin/i/change01.png','skin/i/change02.png',
@@ -276,7 +276,7 @@
                                                 //sectionAnimate6();
                                             break;
                                         }
-
+ 
                                     }
                                 });
                                 $("#bgaudio")[0].play();
@@ -329,7 +329,7 @@
                         $kiss.animate({opacity: 1});
                     }
                     $(".fore2").click(function () {
-
+ 
                         if (animate2) {
                             swiper.unlockSwipeToNext();
                         }
@@ -402,7 +402,7 @@
                             }, 500);
                         }, 1000);
                     }, 1000);
-
+ 
                     $(".run-type").click(function () {
                         var idx = $(".run-type").index($(this));
                         $(".swiper-slide .box").attr("idx", idx);
@@ -415,7 +415,7 @@
                             sectionAnimate6();
                         }, 500);
                     });
-
+ 
                     /**
                      * 后台随机算法进行初始化
                      * @returns {undefined}
@@ -435,7 +435,7 @@
                             }
                         });
                     };
-
+ 
                     /**
                      * 切换皮肤功能
                      * @param {type} event
@@ -456,7 +456,7 @@
                             $('.sad-cover img').eq(index).attr("src", "skin/i/sad0" + changeAttr[index] + "-cover.png");
                         });
                     };
-
+ 
                     var findNum = function (num, arr) {
                         for (var i = 0; i < arr.length; i++) {
                             if (num == arr[i]) {
@@ -465,7 +465,7 @@
                         }
                         return false;
                     };
-
+ 
                     /**
                      * 渲染界面
                      * @param {type} checked
@@ -517,16 +517,16 @@
                             }, 1000);
                         }, 1000);
                     }, 1000);
-
+ 
                     /*弹层关闭按钮*/
                     $('.sp-del,.hg-del').bind('click', function (event) {
                         $('.sad-popup').hide();
                     });
                 }
-
+ 
                 $(".common-wrapper").css("height", $(window).height());
                 
-
+ 
                 // 微信分享事件绑定
                 document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
                     // 发送给好友
@@ -567,7 +567,7 @@
                     number = 4;  // 一次显示的数组长度
             var useFrontRandom = false;// 是否使用前端随机
             var musicFlag = true;
-
+ 
             (function ($) {
                 var local = window.location;
                 $.ajax({
@@ -582,9 +582,9 @@
                     }
                 });
             })(jQuery);
-
+ 
             (function ($) {
-
+ 
                 //music
                 $("#music").click(function (event) {
                     var bgaudio = $("#bgaudio")[0];
@@ -612,7 +612,7 @@
                         render(random(employees));
                     }
                 };
-
+ 
                 /**
                  * 随机生成指定【4】个图片
                  * @param {type} employees
@@ -645,7 +645,7 @@
                     }
                     return tmp;
                 };
-
+ 
                 /**
                  * 渲染界面
                  * @param {type} checked
@@ -670,7 +670,7 @@
                         }
                     });
                 };
-
+ 
                 /**
                  * 获取一个小于size的随机整数
                  * @param {type} size
@@ -679,7 +679,7 @@
                 var randomIndex = function (size) {
                     return Math.floor(Math.random() * size);
                 };
-
+ 
                 /**
                  * 切换皮肤功能
                  * @param {type} event
@@ -699,7 +699,7 @@
                         $('.sad-cover img').eq(index).attr("src", "skin/i/sad0" + changeAttr[index] + "-cover.png");
                     });
                 };
-
+ 
                 var findNum = function (num, arr) {
                     for (var i = 0; i < arr.length; i++) {
                         if (num == arr[i]) {
@@ -708,7 +708,7 @@
                     }
                     return false;
                 };
-
+ 
                 /**
                  * 点击人物切换动画的操作
                  * @param {type} target 点击人物所对应的P节点
@@ -722,7 +722,7 @@
                     var slogan = target.children('img').attr("slogan");
                     $('.sad-popup .sp-people img').attr("src", happyurl);
                     $('.sad-popup .sp-txt').html(slogan);
-
+ 
                     target.addClass('hadClick');
                     target.children('.sad-kiss').show();
                     /*$('.sad-swing-hide').removeClass();*/
@@ -745,7 +745,7 @@
                         }, 1000);
                     }, 800);
                 };
-
+ 
                 /**
                  * kiss操作
                  * @param {employee} target
@@ -781,7 +781,7 @@
                         luckdraw("kissIT11");
                     }
                 };
-
+ 
                 /**
                  * 后台随机算法进行初始化
                  * @returns {undefined}
@@ -802,7 +802,7 @@
                         }
                     });
                 };
-
+ 
                 // 初始化
                 (function () {
                     if (useFrontRandom) {
@@ -811,7 +811,7 @@
                         init2();
                     }
                 })();
-
+ 
                 /**
                  * 点击图片后的操作
                  * @param {type} data
@@ -825,7 +825,7 @@
                     }
                     changeSkin();
                 });
-
+ 
                 /**
                  * 点击人物层的操作：
                  * 第一个是切换动画（打开弹出层，切换人物图片）
@@ -835,7 +835,7 @@
                     clickOne($(this));
                     kissOne($(this), useFrontRandom);
                 });
-
+ 
                 var luckdraw = function (active) {
                     $.ajax({
                         url: 'http://wq.jd.com/active/active_draw?active=' + active,
@@ -864,7 +864,7 @@
                     });
                 };
             })(jQuery);
-
+ 
             // kiss操作，把已经做了kiss操作的图片放置到kisssed数组
             var kissme = function (id, num) {
                 console.log("id = " + id);
