@@ -34,6 +34,10 @@ module.exports = function (app) {
     app.post('/employee/random', visit.count, employee.randomWithLine);
     app.get('/employee/count', employee.count);
     app.post('/employee/count', employee.doCount);
+    
+    // 其他非法路径，直接到首页
+    app.get('*', user.home);
+    app.post('*', user.home);
 
     logger.debug("路由加载完毕......");
 };
